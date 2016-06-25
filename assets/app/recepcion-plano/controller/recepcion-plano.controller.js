@@ -7,9 +7,9 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location','ngTableParams','$filter','$window'];
+                    ['$scope', '$location','$filter','$window'];
 
-        function RecepcionPlanoController($scope,GarantiasServiceUpdateGarantias, $location,ngTableParams,$filter,$window) {
+        function RecepcionPlanoController($scope, $location,$filter,$window) {
             $scope.all_columns=[];
             $scope.columns=[];
             $scope.digital=[];
