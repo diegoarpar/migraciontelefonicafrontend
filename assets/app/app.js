@@ -1,4 +1,4 @@
-var app= angular.module('wpc', ['xeditable', 'ngRoute','ui.bootstrap','ngTable','ngTableToCsv','ngResource','ngFileUpload']);
+var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource']);
 
 app.constant('ApiApp', {
   url: 'http://institucion.certicamara.co/reports/api/insert-database/'
@@ -20,7 +20,9 @@ app.config(['$routeProvider', function ($routeProvider) {
             controller: 'RecepcionPlanoController'}
         );
 
-        $routeProvider.otherwise({redirectTo: '/migracion-telefonica'});
+        $routeProvider.otherwise({redirectTo: '/migracion-telefonica'}
+
+            );
             }
         ]
         );
