@@ -13,67 +13,68 @@
             var b = {};
             return b.EEauthorizationToken = "",
                 b.removeCookie = function() {
-                    $cookies.EEauthorizationToken = "",
-                        $cookies.EEauthorizationUserName = "",
-                        $cookies.EEauthorizationSystemRole = "",
-                        $cookies.EEauthorizationUserRole = "",
+                    $cookies.put("EEauthorizationToken", "") ,
+                        $cookies.put("EEauthorizationUserName", ""),
+                    $cookies.put("EEauthorizationSystemRole", ""),
+                    $cookies.put("EEauthorizationUserRole", ""),
                         b.EEauthorizationImage = ""
                 }
                 ,
                 b.setAuthorizationToken = function(b) {
-                    $cookies.EEauthorizationToken = b
+                    $cookies.put("EEauthorizationToken", b )
                 }
                 ,
                 b.setAuthorizationUserName = function(b) {
-                    $cookies.EEauthorizationUserName = b
+                    $cookies.put("EEauthorizationUserName", b );
                 }
                 ,
                 b.removeAuthorizationToken = function() {
-                    $cookies.EEauthorizationToken = ""
+                    $cookies.remove("EEauthorizationToken", b )
                 }
                 ,
                 b.getAuthorizationToken = function() {
-                    return $cookies.EEauthorizationToken
+                    return $cookies.get("EEauthorizationToken");
                 }
                 ,
                 b.getAuthorizationUserName = function() {
-                    return $cookies.EEauthorizationUserName
+                    return $cookies.get("EEauthorizationUserName");
                 }
                 ,
                 b.hasAuthorizationToken = function() {
-                    return $cookies.EEauthorizationToken || !1
+                    return $cookies.get("EEauthorizationToken") || 1;
                 }
                 ,
                 b.getUserOrganization = function() {
-                    return $cookies.EEauthorizationOrganization
+                    return $cookies.get("EEauthorizationOrganization") ;
                 }
                 ,
                 b.setAuthorizationUserOrganization = function(b) {
-                    $cookies.EEauthorizationOrganization = b
+                     $cookies.put("EEauthorizationOrganization",b) ;
+
                 }
                 ,
                 b.setAuthorizationSystemRole = function(b) {
-                    $cookies.EEauthorizationSystemRole = b
+                    $cookies.put("EEauthorizationSystemRole",b) ;
                 }
                 ,
                 b.getAuthorizationSystemRole = function() {
-                    return $cookies.EEauthorizationSystemRole
+                    return $cookies.get("EEauthorizationSystemRole") ;
                 }
                 ,
                 b.getAuthorizationmUserRole = function() {
-                    return $cookies.EEauthorizationUserRole
+                    return $cookies.get("EEauthorizationUserRole") ;
                 }
                 ,
                 b.setAuthorizationUserRole = function(b) {
-                    return $cookies.EEauthorizationUserRole = b
+                    return $cookies.put("EEauthorizationUserRole",b) ;
                 }
                 ,
                 b.getAuthorizationImage = function() {
-                    return b.EEauthorizationImage
+                    return b.EEauthorizationImage;
                 }
                 ,
                 b.setAuthorizationImage = function(a) {
-                    b.EEauthorizationImage = a
+                    b.EEauthorizationImage = a;
                 }
                 ,
                 b

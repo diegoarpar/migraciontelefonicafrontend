@@ -17,6 +17,7 @@
                     {username: user, password:sha256(pass), organizationId: "telefonica"}
                 );
                 rta.$promise.then(function(data) {
+                    SessionService.removeCookie();
                     SessionService.setAuthorizationToken(data.tokenValue);
                     SessionService.setAuthorizationUserName(data.username);
                     SessionService.setAuthorizationUserOrganization(data.organization);
