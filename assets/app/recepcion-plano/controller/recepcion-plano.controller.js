@@ -10,6 +10,7 @@
                     ['$scope', '$location','$filter','$window'];
 
         function RecepcionPlanoController($scope, $location,$filter,$window) {
+
             $scope.all_columns=[];
             $scope.columns=[];
             $scope.digital=[];
