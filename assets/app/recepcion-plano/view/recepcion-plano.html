@@ -1,8 +1,66 @@
 
 <div id="page-wrapper">
 
+    <pre>TRD: {{selectedTrd.name}}</pre>
+    <!-- Single button -->
+    <div class="btn-group" uib-dropdown is-open="status.isopen">
+        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+            Seleccionar TRD <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
+            <li role="menuitem" ng-repeat="col in columnsTrd track by $index"><span ng-click="selectTrd(col)">{{col.name}}</span></li>
+        </ul>
+    </div>
+    <pre>Serie: {{selectedSerie.name}}</pre>
+    <!-- Single button -->
+    <div class="btn-group" uib-dropdown is-open="status.isopen2">
+        <button id="single-button-2" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+            Seleccionar Serie <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
+            <li role="menuitem" ng-repeat="col in selectedTrd.series track by $index"><span ng-click="selectSerie(col)">{{col.name}}</span></li>
+        </ul>
+    </div>
+
+    <pre>Subserie: {{selectedSubserie.name}}</pre>
+    <!-- Single button -->
+    <div class="btn-group" uib-dropdown is-open="status.isopen3">
+        <button id="single-button-3" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+            Seleccionar Subserie <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
+            <li role="menuitem" ng-repeat="col in selectedSerie.subseries track by $index"><span ng-click="selectSubserie(col)">{{col.name}}</span></li>
+        </ul>
+    </div>
+
+    <button type="button" class="btn btn-info marginated ng-binding ng-scope"
+            ng-repeat="m in availableMetadata" ui-draggable="true" drag="m"
+            on-drop-success="dropSuccessHandler($event,$index,availableMetadata)"
+            draggable="true">
+        No Contrato
+    </button>
+
+    <div ui-tree>
+        <ol ui-tree-nodes="" ng-model="list">
+            <li ng-repeat="item in list" ui-tree-node>
+                <div ui-tree-handle>
+                    {{item.title}}
+                </div>
+                <ol ui-tree-nodes="" ng-model="item.items">
+                    <li ng-repeat="subItem in item.items" ui-tree-node>
+                        <div ui-tree-handle>
+                            {{subItem.title}}
+                        </div>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+
+
     <div id="bcTarget" ng-show="false"></div>
     <canvas id="micanvas" ng-show="false"></canvas>
+
   <h2>RECIBIR GARANTIAS CLIENTE</h2>
   <div data-toggle="collapse" data-target="#desdeArchivo" class="ui-content">Desde archivo</div>
   <div id="desdeArchivo" class="collapse">
@@ -23,7 +81,6 @@
         <div data-toggle="collapse" data-target="#demo" class="ui-content">Ver Columnas</div>
       <div id="demo" class="collapse">
       <div ng-repeat="c in all_columns" >
-
           <input type="checkbox" ng-model="c.checked"/>
           {{c.title}}
           <select  ng-model="c.columnName" >
@@ -38,12 +95,12 @@
           <button class="btn green" ng-click="addColumn(columnName)">Agregar Columna</button>
           </div>
     </div>
-        
+
       </div>
     </div>
-    
-    
-    
+
+
+
     <table  ng-table="tablaGarantias" show-filter="true"   export-csv="csv" separator=";" class="table table-striped table-hover table-condensed " >
         <thead>
         <tr>
@@ -60,17 +117,17 @@
             <td data-title="'r0'"  sortable="'r2'" filter="{ 'r1': 'text'}">{{ c.r2 }}</td>
             <td><button class="btn btn-danger" ng-click="removeRow($index)">del</button></td>
             <td><button ng-click="editRow(c)">Edit</button></td-->
-            
+
         </tr>
     </table>
-    
+
      <script type="text/ng-template" id="display">
             <th>{{c.id}}</th>
           <td ng-repeat="e in columns">{{ c[e.title] }}</td>
             <button ng-click="editRow(c)" class="btn green">Modificar</button>
             <button ng-click="removeRow($index)" class="btn btn-danger">Quitar</button>
         </th>
-        
+
     </script>
     <script type="text/ng-template" id="edit">
         <td>{{c.id}}</td>

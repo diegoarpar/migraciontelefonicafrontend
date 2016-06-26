@@ -7,15 +7,42 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location','$filter','$window'];
+                    ['$scope', '$location','$filter','$window', 'SeriesService', 'MetadataService'];
 
-        function RecepcionPlanoController($scope, $location,$filter,$window) {
+        function RecepcionPlanoController($scope, $location, $filter, $window, SeriesService, MetadataService) {
 
             $scope.all_columns=[];
             $scope.columns=[];
             $scope.digital=[];
             $scope.digitalu=[];
             $scope.numero=[];
+
+
+            SeriesService.getAllTrds().$promise.then(function(data){
+                $scope.columnsTrd = data;
+            });
+
+            $scope.selectTrd = function(select){
+                $scope.selectedTrd = select;
+            }
+
+            $scope.selectSerie = function(select){
+                $scope.selectedSerie = select;
+                MetadataService.getChildrenMetadata({parentCode:$scope.selectedSerie.code}).$promise.then(
+                    function(datos){
+                        alert(datos);
+                    }
+                )
+            }
+
+            $scope.selectSubserie = function(select){
+                $scope.selectedSubserie = select;
+                MetadataService.getChildrenMetadata({parentCode:$scope.selectedSubserie.code}).$promise.then(
+                    function(datos){
+                        alert(datos);
+                    }
+                )
+            }
 
             $scope.createNewUser = function () {
                 $location.path('/user-list');
@@ -83,9 +110,14 @@
             };
 
             $scope.showContent = function($fileContent){
-                var jsontext = $fileContent.split('\n');
-                jsontext=txtToJson(jsontext, $scope);
-                $scope.digital = JSON.parse(jsontext);
+                try {
+                    var jsontext = $fileContent.split('\n');
+                    jsontext = txtToJson(jsontext, $scope);
+                    $scope.digital = JSON.parse(jsontext);
+                }
+                catch(error){
+                    alert("El archivo no se ha podido leer, por favor contactese con la entidad.")
+                }
             };
 
             $scope.export=function($event, fileName){

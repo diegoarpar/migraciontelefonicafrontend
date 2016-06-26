@@ -6,25 +6,51 @@
         angular.module("wpc")
             .factory('SeriesService', SeriesService);
 
-        SeriesService.$inject =  ['$resource','ApiGarantias','$rootScope','$window','SessionService'];
+        SeriesService.$inject =  ['$resource', 'SessionService'];
 
-        function SeriesService($resource,ApiGarantias,$rootScope,$window,$scope,SessionService) {
-            return $resource('http://104.196.61.177/record-manager/api/trds/all-pruned', {}, {
-                create: { method: 'POST',  headers:{'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()},
-                        transformResponse: function(res, headers) {
-                            //var data = angular.fromJson(res);
-                            return res;
-                        }
-                        },
-                show: { method: 'GET', isArray:true, params: {processName: '@processName',dateStart:'@dateEnd',dateEnd:'@dateEnd'}, headers:{'Authorization':'Bearer '+$window.localStorage.getItem('token')}},
-                update: { method: 'PUT', isArray:false, params: {}, headers:{'Authorization':'Bearer '+$window.localStorage.getItem('token')},
-                        transformResponse: function(res, headers) {
-                            //var data = angular.fromJson(res);
-                            return res;
-                        }
+        function SeriesService($resource, SessionService) {
+            var recordManager = "http://104.196.61.177/record-manager/api";
+            var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
+            var url = recordManager + "/trds"
+                , param = {}
+                , functions = {
+                getAllTrds: {
+                    method: "GET",
+                    isArray: !0,
+                    url: url + "/all",
+                    headers:headers
                 },
-                delete: { method: 'DELETE', params: {id: '@id'} }
-            })
+                getAllTrdsPruned: {
+                    method: "GET",
+                    isArray: !0,
+                    url:  url + "/all-pruned",
+                    headers:headers
+                },
+                getDocTypesBySubSeries: {
+                    method: "GET",
+                    params: {
+                        trd: "@trd",
+                        series: "@series",
+                        subSeries: "@subSeries"
+                    },
+                    isArray: !0,
+                    url: url + "/:trd/series/:series/subSeries/:subSeries/docTypes",
+                    headers:headers
+                },
+                getDocTypesBySeries: {
+                    method: "GET",
+                    params: {
+                        trd: "@trd",
+                        series: "@series"
+                    },
+                    isArray: !0,
+                    url: url + "/:trd/series/:series/docTypes",
+                    headers:headers
+                }
+            };
+
+            return $resource(url,param,functions);
+
         }
 
     }

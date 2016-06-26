@@ -1,4 +1,4 @@
-var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource', 'ngCookies', 'ngStorage']);
+var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource', 'ngCookies', 'ngStorage','ui.tree']);
 
 app.constant('ApiApp', {
   url: 'http://institucion.certicamara.co/reports/api/insert-database/'
