@@ -1,62 +1,62 @@
 
 <div id="page-wrapper">
 
-    <pre>TRD: {{selectedTrd.name}}</pre>
-    <!-- Single button -->
-    <div class="btn-group" uib-dropdown is-open="status.isopen">
-        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
-            Seleccionar TRD <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
-            <li role="menuitem" ng-repeat="col in columnsTrd track by $index"><span ng-click="selectTrd(col)">{{col.name}}</span></li>
-        </ul>
-    </div>
-    <pre>Serie: {{selectedSerie.name}}</pre>
-    <!-- Single button -->
-    <div class="btn-group" uib-dropdown is-open="status.isopen2">
-        <button id="single-button-2" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
-            Seleccionar Serie <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
-            <li role="menuitem" ng-repeat="col in selectedTrd.series track by $index"><span ng-click="selectSerie(col)">{{col.name}}</span></li>
-        </ul>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div ui-tree class="col-md-3 well" id="tree-root">
+                <ol ui-tree-nodes ng-model="trds">
+                    <li ng-repeat="trd in trds" ui-tree-node collapsed="true">
+                        <div data-nodrag ui-tree-handle ng-click="setPointer();toggle(this)">
+                            <a data-nodrag>
+                                <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
+
+                                </span></a>
+                            <a>{{trd.name}}</a>
+                        </div>
+                        <ol ui-tree-nodes="" ng-model="trd.series" ng-class="{hidden: collapsed}">
+                            <li ng-repeat="serie in trd.series" ui-tree-node collapsed="true">
+                                <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code]);toggle(this)">
+                                    <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder': collapsed, 'fa fa-folder-open': !collapsed}">
+
+                                    </span></a>
+                                    <a>{{serie.name}}</a>
+                                </div> <ol ui-tree-nodes="" ng-model="serie.subseries" ng-class="{hidden: collapsed}">
+                                <li ng-repeat="subserie in serie.subseries" ui-tree-node collapsed="true">
+                                    <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code,subserie.code]);toggle(this)">
+                                        <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder-o': collapsed, 'fa fa-folder-open-o': !collapsed}">
+
+                                        </span>
+                                        </a>
+                                        <a>{{subserie.name}}</a>
+                                    </div>
+                                </li>
+                            </ol>
+                                <ol ui-tree-nodes="" ng-model="serie.documentTypes" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="documentType in serie.documentTypes" ui-tree-node>
+                                        <div data-nodrag ui-tree-handle>
+                                            <a ng-click="loadDocumentTypeMetadata(documentType)">
+                                                {{documentType.name}}
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
 
-    <pre>Subserie: {{selectedSubserie.name}}</pre>
-    <!-- Single button -->
-    <div class="btn-group" uib-dropdown is-open="status.isopen3">
-        <button id="single-button-3" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
-            Seleccionar Subserie <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" >
-            <li role="menuitem" ng-repeat="col in selectedSerie.subseries track by $index"><span ng-click="selectSubserie(col)">{{col.name}}</span></li>
-        </ul>
-    </div>
-
+    <h4>Seleccionar criterios de búsqueda por metadatos</h4>
     <button type="button" class="btn btn-info marginated ng-binding ng-scope"
             ng-repeat="m in availableMetadata" ui-draggable="true" drag="m"
             on-drop-success="dropSuccessHandler($event,$index,availableMetadata)"
             draggable="true">
-        No Contrato
+        {{m.name}}
     </button>
-
-    <div ui-tree>
-        <ol ui-tree-nodes="" ng-model="list">
-            <li ng-repeat="item in list" ui-tree-node>
-                <div ui-tree-handle>
-                    {{item.title}}
-                </div>
-                <ol ui-tree-nodes="" ng-model="item.items">
-                    <li ng-repeat="subItem in item.items" ui-tree-node>
-                        <div ui-tree-handle>
-                            {{subItem.title}}
-                        </div>
-                    </li>
-                </ol>
-            </li>
-        </ol>
-    </div>
-
 
     <div id="bcTarget" ng-show="false"></div>
     <canvas id="micanvas" ng-show="false"></canvas>

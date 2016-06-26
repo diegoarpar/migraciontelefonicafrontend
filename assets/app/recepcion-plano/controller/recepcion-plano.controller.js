@@ -16,32 +16,84 @@
             $scope.digital=[];
             $scope.digitalu=[];
             $scope.numero=[];
+            $scope.query = {};
+            $scope.fields = [];
 
+            $scope.fields[0] = {
+                key : 'recordName',
+                value: 'Nombre del expediente'
+            }
+            $scope.fields[1] = {
+                key : 'openingDate',
+                value: 'Fecha de apertura'
+            }
+            $scope.fields[2] = {
+                key : 'ownerDocumentType',
+                value: 'Tipo documento del dueño'
+            }
+            $scope.fields[3] = {
+                key : 'ownerDocumentNumber',
+                value: 'Numero documento del dueño'
+            }
 
             SeriesService.getAllTrds().$promise.then(function(data){
-                $scope.columnsTrd = data;
+                $scope.trds = data;
             });
 
-            $scope.selectTrd = function(select){
-                $scope.selectedTrd = select;
+            $scope.setPointer = function(datos) {
+                if (!datos)
+                    return $scope.pointer = datos,
+                        $scope.selectedMetadata = [],
+                        $scope.availableMetadata = [],
+                        $scope.showInResult = {
+                            recordName: !0,
+                            openingDate: !0
+                        },
+                        null;
+
+                angular.forEach(datos, function (value, key) {
+                    var d = ["trd", "series", "subSeries"];
+                    $scope.query[d[key]] = value,
+                    key == datos.length - 1 && ($scope.pointer = value)
+                });
+                $scope.showSpinner = !0,
+                MetadataService.getChildrenMetadata({
+                        parentCode: $scope.pointer
+                }, successMetadata, errorMetadata)
+            };
+
+            function successMetadata(datos) {
+                if(isEmpty(datos)){
+                    ($scope.childrenMetadata = [{
+                        childrenType: "records",
+                        fields: []
+                    }, {
+                        childrenType: "",
+                        fields: []
+                    }],
+                        $scope.availableMetadata = [])
+                }
+                else{
+                    $scope.isNewMetadata = !1;
+                    $scope.childrenMetadata = datos;
+                    $scope.availableMetadata = datos[0].fields;
+
+                    $scope.fields.splice(4,$scope.fields.length-3);
+                    angular.forEach($scope.availableMetadata, function(value,key){
+                        $scope.fields.splice($scope.fields.length,0, {
+                            key: value.name,
+                            value: value.name
+                        });
+                    });
+
+
+                    $scope.selectedMetadata = [];
+                    $scope.showSpinner = !1;
+                }
             }
 
-            $scope.selectSerie = function(select){
-                $scope.selectedSerie = select;
-                MetadataService.getChildrenMetadata({parentCode:$scope.selectedSerie.code}).$promise.then(
-                    function(datos){
-                        alert(datos);
-                    }
-                )
-            }
-
-            $scope.selectSubserie = function(select){
-                $scope.selectedSubserie = select;
-                MetadataService.getChildrenMetadata({parentCode:$scope.selectedSubserie.code}).$promise.then(
-                    function(datos){
-                        alert(datos);
-                    }
-                )
+            function errorMetadata(a) {
+                console.log("error getting resource")
             }
 
             $scope.createNewUser = function () {
@@ -192,6 +244,10 @@
                     $defer.resolve($scope.data);
                 }
             });
+        }
+
+        function isEmpty(a) {
+            return null == a
         }
     }
 )();
