@@ -1,0 +1,246 @@
+th>.ng-table-header {
+
+
+}
+th>* {
+
+text-align: center !important;
+}
+body {
+	background-image:none;
+	background-repeat: repeat-y;
+	background-position:top;
+	background-attachment:fixed;
+	background-color:white !important;
+	margin:0px;
+	font-family: 'Conv_MyriadPro-Regular',Verdana;
+}
+.logoImageCerti{
+    width: 20%;
+    height: 20%;
+
+}
+
+.consulta{
+     column-count: 3;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    -o-column-count: 3;
+
+
+}
+
+.column2{
+     column-count: 4;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    -o-column-count: 4;
+
+
+
+}
+iframe{
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    border-image-source:none !important;
+    border-width:0px !important;
+    border-style:none !important;
+    border-image-outset:inherit !important;
+        border-image-width:0px !important;
+}
+
+body>div{
+
+    display: inherit !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    border : none !important;
+
+}
+
+div[ng-app] { margin: 10px; }
+.table {width: 100% }
+form[editable-form] > div {margin: 10px 0;}
+
+.modal-dialog{
+    max-height: 500px;
+    overflow-y: scroll !important;
+
+}
+
+.navbar-inner{
+    background-image: url(../image/logos/bg-header.gif) !important;
+}
+
+.btn-primary {
+    background-color:#10628a! important;
+}
+button>*{
+    background-color:#10628a! important;
+}
+
+.green{
+background-color:#10628a! important;
+color:white !important;
+background-image: none! important;
+}
+
+.navbar{
+    margin-bottom:0px !important;
+    border:none !important;
+}
+.navbar .nav > li > a{
+color:white !important;
+}
+
+.table th{
+background-color:#10628a! important;
+color:white !important;
+}
+
+h3, h2, h1 {
+    background-color:#10628a! important;
+    color: white !important;
+    text-align:center !important;
+    font-family:'Signika', Arial, Helvetica, sans-serif !important;
+    border-radius: 10px !important;
+}
+
+
+
+
+
+h4.panel-title{
+font-family:'Signika', Arial, Helvetica, sans-serif !important;
+}
+aside{
+ background-color:#10628a! important;
+ color: white !important;
+}
+
+
+
+li{
+
+    list-style:none;
+}
+.rightbar {
+    background: none repeat scroll 0 0 #fff;
+    border-right: 5px solid #ccc;
+    height: 100%;
+    border-top: none !important;
+    position: fixed;
+    left: 0;
+    width: 50px;
+    z-index: 200;
+}
+
+.rightbar ul li {
+    font-family:'Signika', Arial, Helvetica, sans-serif !important;
+    color: white !important;
+    font-weight: 100;
+    /*padding: 16px 0 21px;*/
+    /*width: 0;*/
+    transition:all 0.3s ease;
+        -webkit-transition:all 0.3s ease;
+        -moz-transition:all 0.3s ease;
+        -o-transition:all 0.3s ease;
+        transition:all 0.3s ease;
+
+}
+.rightbar ul li:hover {
+  width:100%;
+
+}
+.rightbar li:hover >*{
+  background-color: black !important;
+
+}
+.rightbar ul li a {
+    color: white !important;
+    float: right;
+    font-size: 0px;
+    width: 150px !important;
+    line-height: 23px;
+    padding-right: 10px !important;
+    transition: all 0.2s ease 0s;
+        -webkit-transition:all 0.1s ease;
+        -moz-transition:all 0.1s ease;
+        -o-transition:all 0.1s ease;
+        transition:all 0.1s ease;
+}
+.accordion-heading .accordion-toggle{
+    padding:0;
+    color: white !important;
+}
+
+
+
+.rightbar ul li a i{
+  color: #8b8b8b;
+    float: right;
+    font-size: 12px;
+    position: absolute;
+    right: 15px;
+       transition:all 0.3s ease;
+        -webkit-transition:all 0.3s ease;
+        -moz-transition:all 0.3s ease;
+        -o-transition:all 0.3s ease;
+        transition:all 0.3s ease;
+}
+
+.accordion-group{
+    border:medium none;
+}
+
+.accordion-inner ul li{
+    padding:10px 0;
+    list-style:none;
+}
+    .rightbar ul li:hover a,
+    .rightbar ul li:hover a i {
+        color: #23b7e5;
+        text-decoration: none;
+    }
+
+.row{
+    padding-left :20px !important;
+}
+.noneStyle a{
+    font-size:13px !important;
+}
+.noneStyle {
+     width: 220px;
+     z-index: 1000;
+     font-size: 12px;
+     transition:all 0.3s ease;
+        -webkit-transition:all 0.3s ease;
+        -moz-transition:all 0.3s ease;
+        -o-transition:all 0.3s ease;
+        transition:all 0.3s ease;
+
+}
+
+
+.columnstwo{
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+}
+
+
+
+/*upload-files*/
+
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 200px;
+    height: 65px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+}
+.dragover {
+    border: 5px dashed blue;
+}

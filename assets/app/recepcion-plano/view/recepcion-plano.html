@@ -1,10 +1,10 @@
 
 <div id="page-wrapper">
-
-
-
+    <div data-toggle="collapse" data-target="#arbol" class="ui-content">Seleccione el Árbol</div>
+    <div id="arbol" class="collapse">
     <div class="row">
         <div class="col-md-12">
+
             <div ui-tree class="col-md-3 well" id="tree-root">
                 <ol ui-tree-nodes ng-model="trds">
                     <li ng-repeat="trd in trds" ui-tree-node collapsed="true">
@@ -48,7 +48,8 @@
                 </ol>
             </div>
         </div>
-    </div>
+        </div></div>
+
 
     <h4>Seleccionar criterios de búsqueda por metadatos</h4>
     <button type="button" class="btn btn-info marginated ng-binding ng-scope"
@@ -58,10 +59,8 @@
         {{m.name}}
     </button>
 
-    <div id="bcTarget" ng-show="false"></div>
-    <canvas id="micanvas" ng-show="false"></canvas>
 
-  <h2>RECIBIR GARANTIAS CLIENTE</h2>
+  <h2>ARCHIVO PLANO</h2>
   <div data-toggle="collapse" data-target="#desdeArchivo" class="ui-content">Desde archivo</div>
   <div id="desdeArchivo" class="collapse">
     <input type="file" class="btn green"  on-read-file="showContent($fileContent)" />

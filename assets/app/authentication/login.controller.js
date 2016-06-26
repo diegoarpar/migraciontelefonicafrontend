@@ -11,6 +11,8 @@
     function LoginController($scope, AuthenticationFactory, $window, SessionService, $sessionStorage) {
 
             // callback for ng-click 'createNewUser':
+            $scope.autenticado=false;
+            if(SessionService.getAuthorizationToken())$scope.autenticado=true;
             $scope.ok = function (user, pass) {
 
                 var rta = AuthenticationFactory.auth(
@@ -25,7 +27,10 @@
                     SessionService.setAuthorizationSystemRole(data.systemRole);
                     SessionService.setAuthorizationImage(data.image);
                     $sessionStorage.EEUserImage = data.image;
+                    data.tokenValue?$window.location.reload():alert("Usuario o Contraseña incorrecta");
+
                 });
+
             };
 
     }

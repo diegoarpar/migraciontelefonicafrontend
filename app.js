@@ -17,6 +17,11 @@ app.config(['$routeProvider', function ($routeProvider) {
             controller: 'RecepcionPlanoController'}
         );
 
+        $routeProvider.when('/login', {
+            templateUrl: 'assets/app/authentication/login.html',
+            controller: 'LoginController'}
+        );
+
         $routeProvider.otherwise({redirectTo: '/migracion-telefonica'}
 
             );

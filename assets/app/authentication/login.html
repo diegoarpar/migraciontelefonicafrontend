@@ -1,15 +1,16 @@
-<div class='navbar'>
-<form class="navbar-search pull-center">
+<div class=" green" ng-controller="LoginController">
+<div data-toggle="collapse" data-target="#ingreso" class="ui-content" >Login <div ng-if="autenticado"> Autenticado OK </div> </div>
+<div id="ingreso" class="collapse">
+        <form class="navbar-search pull-center">
             <span>Usuario</span> <input type="text" ng-model="nombre" class="span2" placeholder="Usuario">
             <br/>
             <span>Contraseña</span><input type="password" ng-model="contrasena" class="span2" placeholder="Contaseña">
             <br/>
-            <span>Establecimiento</span><input type="text" class="span2" placeholder="Establecimiento">
-            <br/>
-            
+
             <input type="submit" value="Ingresar"  ng-click="ok(nombre,contrasena)" class="btn green"/>
             <input type="submit" value="Volver" ng-click="cancel()"class="btn green"/>
         </form>
     
-    </div>
-
+<div/>
+</div>
+</div>
