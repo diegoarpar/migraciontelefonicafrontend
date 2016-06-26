@@ -7,9 +7,9 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location','$filter','$window', 'SeriesService', 'MetadataService'];
+                    ['$scope', '$location','$filter','$window', 'SeriesService', 'MetadataService','ExpedienteService'];
 
-        function RecepcionPlanoController($scope, $location, $filter, $window, SeriesService, MetadataService) {
+        function RecepcionPlanoController($scope, $location, $filter, $window, SeriesService, MetadataService,ExpedienteService) {
 
             $scope.all_columns=[];
             $scope.columns=[];
@@ -19,22 +19,10 @@
             $scope.query = {};
             $scope.fields = [];
 
-            $scope.fields[0] = {
-                key : 'recordName',
-                value: 'Nombre del expediente'
-            }
-            $scope.fields[1] = {
-                key : 'openingDate',
-                value: 'Fecha de apertura'
-            }
-            $scope.fields[2] = {
-                key : 'ownerDocumentType',
-                value: 'Tipo documento del dueño'
-            }
-            $scope.fields[3] = {
-                key : 'ownerDocumentNumber',
-                value: 'Numero documento del dueño'
-            }
+            $scope.fields[0] = {key : 'recordName',value: 'Nombre del expediente'};
+            $scope.fields[1] = {key : 'openingDate',value: 'Fecha de apertura'};
+            $scope.fields[2] = {key : 'ownerDocumentType',value: 'Tipo documento del dueño'};
+            $scope.fields[3] = {key : 'ownerDocumentNumber',value: 'Numero documento del dueño'};
 
             SeriesService.getAllTrds().$promise.then(function(data){
                 $scope.trds = data;
@@ -112,7 +100,28 @@
                 };
                 $scope.digital.push($scope.inserted);
             };
+            $scope.searchPlanilla = function() {
+            var rta;
+            var searchString="";
 
+
+            for(var j=0;j<$scope.digital.length;j++){
+                searchString="{"
+                for(var i=0;i<$scope.all_columns.length;i++){
+                    if($scope.all_columns[i].buscar){
+                    searchString+=$scope.all_columns[i].columnName+":";
+                    searchString+=$scope.digital[j][$scope.all_columns[i].title];
+                    searchString+=",";
+                    }
+                }
+                searchString=searchString.substr(0,searchString.length-1);
+                searchString+="}";
+                alert("buscando... por \n" + searchString );
+                ExpedienteService.getExpedient(Json.parse(searchString));
+            }
+            //searchString=searchString.substr(0,searchString.length-1);
+
+            };
             $scope.addColumn = function(title) {
                 $scope.inserted = {
                     title: title,
@@ -143,22 +152,6 @@
 
             $scope.createPlanilla = function () {
 
-                $scope.numero=NumberService.getNumber('');
-                $scope.numero.$promise.then(function(data) {
-                    $scope.numero=data;
-                    concatNumber($scope);
-                    try{
-                        changeColumnName($scope,$scope.all_columns);
-                    }catch(e){alert (e);return;}
-                    generateBarCodePDF($scope.numero[0].number,document,"Acuse de Recibido");
-                    GarantiasServices.create($scope.digital);
-                    alert("REGISTRO REALIZADO CON EL ACUSE "+$scope.numero[0].number) ;
-
-                    $scope.numero=[];
-                    $scope.digital=[];
-                    $scope.all_columns=[];
-                    //$window.location.reload();
-                });
             };
 
             $scope.showContent = function($fileContent){

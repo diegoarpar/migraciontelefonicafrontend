@@ -4,20 +4,20 @@
 (function(){
         'use strict';
         angular.module("wpc")
-            .factory('MetadataService', MetadataService);
+            .factory('ExpedienteService', ExpedienteService);
 
-        MetadataService.$inject =  ["$resource", 'SessionService','ApiRecordManager'];
+        ExpedienteService.$inject =  ["$resource", 'SessionService','ApiDocumentManager'];
 
-        function MetadataService($resource, SessionService,ApiRecordManager) {
-            var recordManager = ApiRecordManager.url+"record-manager/api";
+        function ExpedienteService($resource, SessionService,ApiDocumentManager) {
+            var electronicRecords = ApiDocumentManager.url+"document-manager/api/";
             var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
-            var url = recordManager + "/metadata"
+            var url = electronicRecords + "/electronic-records"
                 , param = {}
                 , functions = {
-                getSubgroupMetadata: {
+                getExpedient: {
                     method: "GET",
                     isArray: !0,
-                    url: url + "/subgroup",
+                    url: url + "/query",
                     headers:headers
                 },
                 getDocumentTypeMetadata: {

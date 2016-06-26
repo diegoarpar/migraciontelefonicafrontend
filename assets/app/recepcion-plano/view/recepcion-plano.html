@@ -80,8 +80,11 @@
         <div data-toggle="collapse" data-target="#demo" class="ui-content">Ver Columnas</div>
       <div id="demo" class="collapse">
       <div ng-repeat="c in all_columns" >
+          ver:
           <input type="checkbox" ng-model="c.checked"/>
-          {{c.title}}
+           {{c.title}}
+          buscar:
+          <input type="checkbox" ng-model="c.buscar"/>
           <select  ng-model="c.columnName" >
               <option ng-repeat="r in fields" value="{{r.key}}">{{r.value}}</option>
           </select>
@@ -104,6 +107,7 @@
         <thead>
         <tr>
             <th> id </th>
+            <th> encontrado</th>
 
           <th ng-repeat="c in columns">{{ c.title }}
           </th>
@@ -122,7 +126,9 @@
 
      <script type="text/ng-template" id="display">
             <th>{{c.id}}</th>
+            <td ><input type="checkbox" ng-model="c.encontrado"></td>
           <td ng-repeat="e in columns">{{ c[e.title] }}</td>
+
             <button ng-click="editRow(c)" class="btn green">Modificar</button>
             <button ng-click="removeRow($index)" class="btn btn-danger">Quitar</button>
         </th>
@@ -130,14 +136,19 @@
     </script>
     <script type="text/ng-template" id="edit">
         <td>{{c.id}}</td>
+        <td ><input type="checkbox" ng-model="c.encontrado"></td>
         <td ng-repeat="e in columns"><input type="text" ng-model="digital.selected[e.title]" /></td>
         <td>
             <button ng-click="saveRow($index)" class="btn green">Guardar</button>
             <button ng-click="reset()" class="btn btn-danger">Cancelar</button>
         </td>
     </script>
+
+    <div>
       <button class="btn green" ng-click="addRow()">Agregar Registro</button>
-      <button class="btn green" ng-click="createPlanilla()">Confirmar Planilla</button>
+      <button class="btn green" ng-click="searchPlanilla()">Consultar Plano</button>
+      <button class="btn green" ng-click="createPlanilla()">Confirmar Plano</button>
+    </div>
 </div>
 
 

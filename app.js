@@ -9,6 +9,12 @@ app.constant('ApiApp', {
  app.constant('ApiGarantias', {
   url: 'http://localhost:2020/garantias/'
  })
+ app.constant('ApiRecordManager', {
+   url: 'http://104.196.61.177/'
+  });
+app.constant('ApiDocumentManager', {
+ url: 'http://104.196.61.177/'
+});
 app.config(['$routeProvider', function ($routeProvider) {
 
 
