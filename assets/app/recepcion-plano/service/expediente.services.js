@@ -15,6 +15,7 @@
                 , param = {}
                 , functions = {
                 getExpedient: {
+                    params: {skip:0},
                     method: "GET",
                     isArray: !0,
                     url: url + "/query",

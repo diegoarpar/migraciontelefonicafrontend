@@ -109,15 +109,15 @@
                 searchString="{"
                 for(var i=0;i<$scope.all_columns.length;i++){
                     if($scope.all_columns[i].buscar){
-                    searchString+=$scope.all_columns[i].columnName+":";
-                    searchString+=$scope.digital[j][$scope.all_columns[i].title];
+                    searchString+="\""+$scope.all_columns[i].columnName+"\""+":";
+                    searchString+= "\""+$scope.digital[j][$scope.all_columns[i].title]+"\"";
                     searchString+=",";
                     }
                 }
                 searchString=searchString.substr(0,searchString.length-1);
                 searchString+="}";
                 alert("buscando... por \n" + searchString );
-                ExpedienteService.getExpedient(Json.parse(searchString));
+                ExpedienteService.getExpedient(JSON.parse(searchString));
             }
             //searchString=searchString.substr(0,searchString.length-1);
 
