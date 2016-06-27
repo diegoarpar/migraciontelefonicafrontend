@@ -60,7 +60,7 @@
     </button>
 
 
-  <h2>ARCHIVO PLANO</h2>
+  <h2>ARCHIVO PLANO trd:{{query.trd}} series:{{query.series}} subseries:{{query.subSeries}}</h2>
   <div data-toggle="collapse" data-target="#desdeArchivo" class="ui-content">Desde archivo</div>
   <div id="desdeArchivo" class="collapse">
     <input type="file" class="btn green"  on-read-file="showContent($fileContent)" />
@@ -126,7 +126,7 @@
 
      <script type="text/ng-template" id="display">
             <th>{{c.id}}</th>
-            <td ><input type="checkbox" ng-model="c.encontrado"></td>
+            <td >{{c.encontrado}}</td>
           <td ng-repeat="e in columns">{{ c[e.title] }}</td>
 
             <button ng-click="editRow(c)" class="btn green">Modificar</button>

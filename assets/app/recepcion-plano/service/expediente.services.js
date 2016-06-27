@@ -11,14 +11,14 @@
         function ExpedienteService($resource, SessionService,ApiDocumentManager) {
             var electronicRecords = ApiDocumentManager.url+"document-manager/api/";
             var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
-            var url = electronicRecords + "/electronic-records"
+            var url = electronicRecords + "electronic-records/"
                 , param = {}
                 , functions = {
                 getExpedient: {
-                    params: {skip:0},
+                    params: {skip:0,limit:10},
                     method: "GET",
-                    isArray: !0,
-                    url: url + "/query",
+
+                    url: url + "query",
                     headers:headers
                 },
                 getDocumentTypeMetadata: {

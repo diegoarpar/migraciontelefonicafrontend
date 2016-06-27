@@ -7,9 +7,9 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location','$filter','$window', 'SeriesService', 'MetadataService','ExpedienteService'];
+                    ['$scope', '$location','$filter','$window', 'SeriesService', 'MetadataService','ExpedienteService','ngTableParams','ApiDocumentManager','$http','$timeout', '$q'];
 
-        function RecepcionPlanoController($scope, $location, $filter, $window, SeriesService, MetadataService,ExpedienteService) {
+        function RecepcionPlanoController($scope, $location, $filter, $window, SeriesService, MetadataService,ExpedienteService,ngTableParams,ApiDocumentManager,$http,$timeout,$q) {
 
             $scope.all_columns=[];
             $scope.columns=[];
@@ -101,10 +101,14 @@
                 $scope.digital.push($scope.inserted);
             };
             $scope.searchPlanilla = function() {
+                /*var promise = $http.get("http://104.196.61.177/document-manager/api/electronic-records/query?limit=10&series=12-CONTRATOS&skip=0&subSeries=12-CONTRATOS-13&trd=12",{headers:{Authorization:"c6f0ac40a04f2d764596"}});
+                promise .success(function(data) {
+                        alert(data.count);
+                    })*/
             var rta;
             var searchString="";
 
-
+            $scope.count=0;
             for(var j=0;j<$scope.digital.length;j++){
                 searchString="{"
                 for(var i=0;i<$scope.all_columns.length;i++){
@@ -116,11 +120,28 @@
                 }
                 searchString=searchString.substr(0,searchString.length-1);
                 searchString+="}";
-                alert("buscando... por \n" + searchString );
-                ExpedienteService.getExpedient(JSON.parse(searchString));
-            }
-            //searchString=searchString.substr(0,searchString.length-1);
 
+                searchString=JSON.parse(searchString);
+                searchString.series=$scope.query.series;
+                searchString.trd=$scope.query.trd;
+                $scope.expediente = ExpedienteService.getExpedient(searchString);
+                $scope.encontrado=false;
+                $scope.expediente.$promise.then(function(data) {
+                    if(data.count>0){
+                        $scope.digital[$scope.count].encontrado=true;
+                    }else{
+                        $scope.digital[$scope.count].encontrado=false;
+                    }
+                    if(data.count>1){
+                        alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)
+
+                    }
+                    $scope.count++;
+                });
+            }
+
+            //searchString=searchString.substr(0,searchString.length-1);
+            //construirTabla($scope, $scope.digital,ngTableParams,$filter);
             };
             $scope.addColumn = function(title) {
                 $scope.inserted = {
@@ -221,6 +242,8 @@
                 newColumn+="]";
                 $scope.digital = JSON.parse(newColumn);
         };
+
+
         function construirTabla($scope, digital,ngTableParams,$filter){
             $scope.data = digital;
             $scope.tablaGarantias = new ngTableParams({
