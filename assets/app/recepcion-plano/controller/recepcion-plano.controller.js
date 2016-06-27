@@ -129,13 +129,17 @@
                 $scope.expediente.$promise.then(function(data) {
                     if(data.count>0){
                         $scope.digital[$scope.count].encontrado=data.count;
+                        var row=rowToMigrate($scope.digital[$scope.count],$scope.all_columns);
+
                     }else{
                         $scope.digital[$scope.count].encontrado=data.count;
+                        var row=rowToMigrate($scope.digital[$scope.count],$scope.all_columns);
                     }
                     if(data.count>1){
                         alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)
 
                     }
+                    alert("new row");
                     $scope.count++;
                 });
             }
@@ -220,7 +224,34 @@
             }
             return value;
         };
+        function rowToMigrate(object,listColumns){
+            var newList={};
+            var newRow="{";
+            var newColumnName;
+            var propertieseval=[];
+            for(var j=0;j<listColumns.length;j++){
+                if(listColumns[j].datoaMigrar){
+                newColumnName=listColumns[j].columnName;
+                    if(!propertieseval[newColumnName]){
+                        var newColumnName=listColumns[j].columnName;
+                        var oldColumnName=listColumns[j].title;
+                        newRow+="\""+newColumnName+"\":";
+                        newRow+="\""+object[oldColumnName]+"\",";
+                        propertieseval[newColumnName]=newColumnName;
+                    }else{
+                    throw ("Columna "+newColumnName +" repetida");
+                    }
+                }
+            }
+            propertieseval=[];
+            newRow=newRow.substr(0,newRow.length-1);
+            newRow+="}";
+
+            newRow = JSON.parse(newRow);
+            return newRow;
+    };
         function changeColumnName($scope,listColumns){
+                var newList=[];
                 var newColumn="[";
                 var propertieseval=[];
                 for(var i=0;i<$scope.digital.length;i++){
@@ -245,7 +276,8 @@
                 }
                 newColumn=newColumn.substr(0,newColumn.length-1);
                 newColumn+="]";
-                $scope.digital = JSON.parse(newColumn);
+                newList = JSON.parse(newColumn);
+                return newList;
         };
 
 
