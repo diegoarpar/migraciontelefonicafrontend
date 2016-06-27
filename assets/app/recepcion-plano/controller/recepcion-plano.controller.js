@@ -92,7 +92,7 @@
             };
             $scope.removeRow = function(index) {
                 $scope.digital.splice(index, 1);
-                construirTabla($scope, $scope.digital,ngTableParams,$filter);
+                //construirTabla($scope, $scope.digital,ngTableParams,$filter);
             };
             $scope.addRow = function() {
                 $scope.inserted = {
@@ -128,9 +128,9 @@
                 $scope.encontrado=false;
                 $scope.expediente.$promise.then(function(data) {
                     if(data.count>0){
-                        $scope.digital[$scope.count].encontrado=true;
+                        $scope.digital[$scope.count].encontrado=data.count;
                     }else{
-                        $scope.digital[$scope.count].encontrado=false;
+                        $scope.digital[$scope.count].encontrado=data.count;
                     }
                     if(data.count>1){
                         alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)
@@ -143,6 +143,9 @@
             //searchString=searchString.substr(0,searchString.length-1);
             //construirTabla($scope, $scope.digital,ngTableParams,$filter);
             };
+            $scope.migrar=function(){
+                changeColumnName($scope,$scope.all_columns);
+            }
             $scope.addColumn = function(title) {
                 $scope.inserted = {
                     title: title,
@@ -222,15 +225,17 @@
                 var propertieseval=[];
                 for(var i=0;i<$scope.digital.length;i++){
                     newColumn+="{";
-
-                    for(var e in $scope.digital[i]){
-                        var newColumnName=getChange(e,listColumns);
-                        if(!propertieseval[newColumnName]){
-                            newColumn+="\""+newColumnName+"\":";
-                            newColumn+="\""+$scope.digital[i][e]+"\",";
-                            propertieseval[newColumnName]=newColumnName;
-                        }else{
-                        throw ("Columna "+newColumnName +" repetida");
+                    for(var j=0;j<listColumns.length;j++){
+                        if(listColumns[j].datoaMigrar){
+                            if(!propertieseval[newColumnName]){
+                                var newColumnName=listColumns[j].columnName;
+                                var oldColumnName=listColumns[j].title;
+                                newColumn+="\""+newColumnName+"\":";
+                                newColumn+="\""+$scope.digital[i][oldColumnName]+"\",";
+                                propertieseval[newColumnName]=newColumnName;
+                            }else{
+                            throw ("Columna "+newColumnName +" repetida");
+                            }
                         }
 
                     }

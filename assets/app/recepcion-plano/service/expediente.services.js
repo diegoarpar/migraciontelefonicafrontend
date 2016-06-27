@@ -21,10 +21,10 @@
                     url: url + "query",
                     headers:headers
                 },
-                getDocumentTypeMetadata: {
-                    method: "GET",
-                    isArray: !0,
-                    url: url + "/documentType",
+                createExpediente: {
+                    method: "post",
+
+                    url: url + "",
                     headers:headers
                 },
                 getOperationMetadataForDocType: {
