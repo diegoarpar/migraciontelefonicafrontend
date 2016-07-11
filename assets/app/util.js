@@ -77,3 +77,7 @@ var generateBarCodePDF= function(code, document, text){
          $("#bcTarget").barcode("", "code128",{output:"svg"});
 
 };
+
+function jsonEscape(str)  {
+    return str.replace(/\n/g, "n").replace(/\r/g, "r").replace(/\t/g, "t");
+}
