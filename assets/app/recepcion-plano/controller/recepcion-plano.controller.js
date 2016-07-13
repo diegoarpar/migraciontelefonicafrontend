@@ -186,7 +186,8 @@
                 try {
                     var jsontext = $fileContent.split('\n');
                     jsontext = txtToJson(jsontext, $scope);
-                    $scope.digital = JSON.parse(jsontext);
+                    $scope.digital = eval('('+ jsonEscape(jsontext) +')');
+                    //$scope.digital = JSON.parse(jsontext);
                 }
                 catch(error){
                     alert("El archivo no se ha podido leer, por favor contactese con la entidad.")
