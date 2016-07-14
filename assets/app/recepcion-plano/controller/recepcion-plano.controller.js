@@ -7,9 +7,9 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location','$filter','$window', 'SeriesService', 'MetadataService','ExpedienteService','ngTableParams','ApiDocumentManager','$http','$timeout', '$q'];
+                    ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService','SessionService','ApiDocumentManager','$http','$timeout', '$q'];
 
-        function RecepcionPlanoController($scope, $location, $filter, $window, SeriesService, MetadataService,ExpedienteService,ngTableParams,ApiDocumentManager,$http,$timeout,$q) {
+        function RecepcionPlanoController($scope, $location, SeriesService, MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q) {
 
             $scope.all_columns=[];
             $scope.columns=[];
@@ -101,10 +101,37 @@
                 $scope.digital.push($scope.inserted);
             };
             $scope.searchPlanilla = function() {
-                /*var promise = $http.get("http://104.196.61.177/document-manager/api/electronic-records/query?limit=10&series=12-CONTRATOS&skip=0&subSeries=12-CONTRATOS-13&trd=12",{headers:{Authorization:"c6f0ac40a04f2d764596"}});
-                promise .success(function(data) {
-                        alert(data.count);
-                    })*/
+
+                for(var i=0; i<$scope.digital.length; i++) {
+                    var promise =
+                        $http.get("http://104.196.61.177/document-manager/api/electronic-records/query",
+                            {
+                                params: {
+                                    series: $scope.query.series,
+                                    subSeries: $scope.query.subSeries,
+                                    trd: $scope.query.trd,
+                                    skip: "0",
+                                    limit: "999999",
+                                    ownerDocumentNumber: "800032945"
+                                },
+                                headers : {
+                                    'Accept': 'application/json',
+                                    'Authorization':SessionService.getAuthorizationToken()
+                                }
+
+                            });
+                    promise.success(function (data) {
+                        if(data.length == 0){
+                            $scope.digital[i].encontrado = "No Encontrado";
+                        }
+                        else{
+                            $scope.digital[i].encontrado = "encontrado";
+                        }
+                    });
+                    promise.error(function(error){
+
+                    });
+                }
             var rta;
             var searchString="";
 
@@ -187,6 +214,7 @@
                     var jsontext = $fileContent.split('\n');
                     jsontext = txtToJson(jsontext, $scope);
                     $scope.digital = eval('('+ jsonEscape(jsontext) +')');
+                    $scope.digital.splice(-1,1);
                     //$scope.digital = JSON.parse(jsontext);
                 }
                 catch(error){
