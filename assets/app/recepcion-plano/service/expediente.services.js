@@ -21,7 +21,7 @@
                     url: url + "query",
                     headers:headers
                 },
-                createExpediente: {
+                createExpedient: {
                     method: "post",
 
                     url: url + "",
