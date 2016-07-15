@@ -38,7 +38,15 @@
                             openingDate: !0
                         },
                         null;
-
+                else{
+                    $scope.query.subSeries = null;
+                    if(datos.lenght < 2) {
+                        $scope.query.series = null;
+                    }
+                    if(datos.length <1){
+                        $scope.query.trd = null;
+                    }
+                }
                 angular.forEach(datos, function (value, key) {
                     var d = ["trd", "series", "subSeries"];
                     $scope.query[d[key]] = value,
@@ -100,80 +108,87 @@
                 };
                 $scope.digital.push($scope.inserted);
             };
-            $scope.searchPlanilla = function() {
-
-                for(var i=0; i<$scope.digital.length; i++) {
-                    var promise =
-                        $http.get("http://104.196.61.177/document-manager/api/electronic-records/query",
-                            {
-                                params: {
-                                    series: $scope.query.series,
-                                    subSeries: $scope.query.subSeries,
-                                    trd: $scope.query.trd,
-                                    skip: "0",
-                                    limit: "999999",
-                                    ownerDocumentNumber: "800032945"
-                                },
-                                headers : {
-                                    'Accept': 'application/json',
-                                    'Authorization':SessionService.getAuthorizationToken()
-                                }
-
-                            });
-                    promise.success(function (data) {
-                        if(data.length == 0){
-                            $scope.digital[i].encontrado = "No Encontrado";
-                        }
-                        else{
-                            $scope.digital[i].encontrado = "encontrado";
-                        }
-                    });
-                    promise.error(function(error){
-
-                    });
+            $scope.searchPlanilla = function(i) {
+                if(i == null){
+                    i = 0;
                 }
-            var rta;
-            var searchString="";
+                if(i == $scope.digital.length){
+                    return;
+                }
 
-            $scope.count=0;
-            for(var j=0;j<$scope.digital.length;j++){
-                searchString="{"
-                for(var i=0;i<$scope.all_columns.length;i++){
-                    if($scope.all_columns[i].buscar){
-                    searchString+="\""+$scope.all_columns[i].columnName+"\""+":";
-                    searchString+= "\""+$scope.digital[j][$scope.all_columns[i].title]+"\"";
-                    searchString+=",";
+                var params = {
+                    series: $scope.query.series,
+                    subSeries: $scope.query.subSeries,
+                    trd: $scope.query.trd,
+                    skip: "0",
+                    limit: "999999",
+                    ownerDocumentType: "C.C"
+                };
+                for(var j = 0; j < $scope.all_columns.length; j++){
+                    if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].buscar == 1){
+                        params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                     }
                 }
-                searchString=searchString.substr(0,searchString.length-1);
-                searchString+="}";
+                $scope.expediente = ExpedienteService.getExpedient(params);
 
-                searchString=JSON.parse(searchString);
-                searchString.series=$scope.query.series;
-                searchString.trd=$scope.query.trd;
-                $scope.expediente = ExpedienteService.getExpedient(searchString);
-                $scope.encontrado=false;
-                $scope.expediente.$promise.then(function(data) {
-                    if(data.count>0){
-                        $scope.digital[$scope.count].encontrado=data.count;
-                        var row=rowToMigrate($scope.digital[$scope.count],$scope.all_columns);
+                $scope.expediente.$promise.then(
+                    function(data) {
+                        if(data.count>0){
+                            $scope.digital[i].encontrado=data.count;
+                            
 
-                    }else{
-                        $scope.digital[$scope.count].encontrado=data.count;
-                        var row=rowToMigrate($scope.digital[$scope.count],$scope.all_columns);
+                        }else{
+                            $scope.digital[i].encontrado=data.count;
+                            $scope.createExpedient(i);
+                        }
+                        if(data.count>1){
+                            alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)
+
+                        }
+                        alert("new row");
+                        i = i+1;
+                        $scope.searchPlanilla(i);
+                    },
+                    function(error){
+                        alert("ha ocurrido un error");
                     }
-                    if(data.count>1){
-                        alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)
+                );
 
-                    }
-                    alert("new row");
-                    $scope.count++;
-                });
-            }
-
-            //searchString=searchString.substr(0,searchString.length-1);
-            //construirTabla($scope, $scope.digital,ngTableParams,$filter);
             };
+
+            $scope.createExpedient = function(i){
+                var params = {
+                    series: $scope.query.series,
+                    subSeries: $scope.query.subSeries,
+                    trd: $scope.query.trd,
+                    skip: "0",
+                    limit: "999999",
+                    ownerDocumentType: "C.C"
+                };
+                for(var j = 0; j < $scope.all_columns.length; j++){
+                    if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].buscar == 1){
+                        params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                    }
+                }
+                $scope.createExpedient = ExpedienteService.createExpedient(params);
+
+                $scope.createExpedient.$promise.then(
+                    function(data) {
+                        $scope.createFileInExpedient();
+                    },
+                    function(error){
+                        alert("ha ocurrido un error");
+                    }
+                );
+                
+            };
+            
+            $scope.createFileInExpedient = function(){
+                
+                
+            };
+
+
             $scope.migrar=function(){
                 changeColumnName($scope,$scope.all_columns);
             }
@@ -235,98 +250,6 @@
 
         }
 
-
-        function concatNumber($scope){
-            for(var i=0;i<$scope.digital.length;i++){
-                $scope.digital[i].acuse=$scope.numero[0].number;
-
-            }
-        };
-
-        function getChange(value, listColumns){
-            for(var i=0;i<listColumns.length;i++){
-
-                   if(listColumns[i].title==value){
-                        if(listColumns[i].columnName==undefined){ throw("Existe un valor sin equivalente");return "NOK";}
-                        return listColumns[i].columnName;
-                   }
-            }
-            return value;
-        };
-        function rowToMigrate(object,listColumns){
-            var newList={};
-            var newRow="{";
-            var newColumnName;
-            var propertieseval=[];
-            for(var j=0;j<listColumns.length;j++){
-                if(listColumns[j].datoaMigrar){
-                newColumnName=listColumns[j].columnName;
-                    if(!propertieseval[newColumnName]){
-                        var newColumnName=listColumns[j].columnName;
-                        var oldColumnName=listColumns[j].title;
-                        newRow+="\""+newColumnName+"\":";
-                        newRow+="\""+object[oldColumnName]+"\",";
-                        propertieseval[newColumnName]=newColumnName;
-                    }else{
-                    throw ("Columna "+newColumnName +" repetida");
-                    }
-                }
-            }
-            propertieseval=[];
-            newRow=newRow.substr(0,newRow.length-1);
-            newRow+="}";
-
-            newRow = JSON.parse(newRow);
-            return newRow;
-    };
-        function changeColumnName($scope,listColumns){
-                var newList=[];
-                var newColumn="[";
-                var propertieseval=[];
-                for(var i=0;i<$scope.digital.length;i++){
-                    newColumn+="{";
-                    for(var j=0;j<listColumns.length;j++){
-                        if(listColumns[j].datoaMigrar){
-                            if(!propertieseval[newColumnName]){
-                                var newColumnName=listColumns[j].columnName;
-                                var oldColumnName=listColumns[j].title;
-                                newColumn+="\""+newColumnName+"\":";
-                                newColumn+="\""+$scope.digital[i][oldColumnName]+"\",";
-                                propertieseval[newColumnName]=newColumnName;
-                            }else{
-                            throw ("Columna "+newColumnName +" repetida");
-                            }
-                        }
-
-                    }
-                    propertieseval=[];
-                    newColumn=newColumn.substr(0,newColumn.length-1);
-                    newColumn+="},";
-                }
-                newColumn=newColumn.substr(0,newColumn.length-1);
-                newColumn+="]";
-                newList = JSON.parse(newColumn);
-                return newList;
-        };
-
-
-        function construirTabla($scope, digital,ngTableParams,$filter){
-            $scope.data = digital;
-            $scope.tablaGarantias = new ngTableParams({
-                page: 1,
-                count: 2000,
-                sorting: {firstname:'asc'}
-            }, {
-                total: digital.length,
-                getData: function ($defer, params) {
-                    params.total(digital.length);
-                    $scope.data = params.sorting() ? $filter('orderBy')(digital, params.orderBy()) : digital;
-                    $scope.data = params.filter() ? $filter('filter')($scope.data, params.filter()) : digital;
-                    $scope.data = $scope.data.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                    $defer.resolve($scope.data);
-                }
-            });
-        }
 
         function isEmpty(a) {
             return null == a
