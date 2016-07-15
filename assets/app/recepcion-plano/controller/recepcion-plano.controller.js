@@ -146,8 +146,7 @@
 
                         }
                         alert("new row");
-                        i = i+1;
-                        $scope.searchPlanilla(i);
+
                     },
                     function(error){
                         alert("ha ocurrido un error");
@@ -161,20 +160,19 @@
                     series: $scope.query.series,
                     subSeries: $scope.query.subSeries,
                     trd: $scope.query.trd,
-                    skip: "0",
-                    limit: "999999",
-                    ownerDocumentType: "C.C"
+                    ownerDocumentType: "C.C",
+                    openingDate: new Date()
                 };
                 for(var j = 0; j < $scope.all_columns.length; j++){
                     if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].buscar == 1){
                         params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                     }
                 }
-                $scope.createExpedient = ExpedienteService.createExpedient(params);
+                $scope.expedient = ExpedienteService.createExpedient(params);
 
-                $scope.createExpedient.$promise.then(
+                $scope.expedient.$promise.then(
                     function(data) {
-                        $scope.createFileInExpedient();
+                        $scope.createFileInExpedient(i);
                     },
                     function(error){
                         alert("ha ocurrido un error");
@@ -183,8 +181,9 @@
                 
             };
             
-            $scope.createFileInExpedient = function(){
-                
+            $scope.createFileInExpedient = function(i){
+                i = i+1;
+                $scope.searchPlanilla(i);
                 
             };
 
