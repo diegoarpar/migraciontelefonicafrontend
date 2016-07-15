@@ -56,6 +56,8 @@
                 MetadataService.getChildrenMetadata({
                         parentCode: $scope.pointer
                 }, successMetadata, errorMetadata)
+                
+
             };
 
             function successMetadata(datos) {
@@ -86,11 +88,36 @@
                     $scope.selectedMetadata = [];
                     $scope.showSpinner = !1;
                 }
+                //Get doctypes from series or subseries
+                if($scope.query.subSeries != null){
+                    SeriesService.getDocTypesBySubSeries({
+                        trd: $scope.query.trd,
+                        series: $scope.query.series,
+                        subSeries: $scope.query.subSeries
+                    }, successDocType, errorDocType)
+                }
+                else {
+                    if ($scope.query.series != null) {
+                        SeriesService.getDocTypesBySeries({
+                            trd: $scope.query.trd,
+                            series: $scope.query.series
+                        }, successDocType, errorDocType)
+                    }
+                }
             }
 
             function errorMetadata(a) {
                 console.log("error getting resource")
             }
+
+            function successDocType(datos){
+
+            }
+
+            function errorDocType(a) {
+                console.log("error getting resource")
+            }
+
 
             $scope.createNewUser = function () {
                 $location.path('/user-list');
