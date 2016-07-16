@@ -138,6 +138,7 @@
             $scope.searchPlanilla = function(i) {
                 if(i == null){
                     i = 0;
+                    $scope.count=0;
                 }
                 if(i == $scope.digital.length){
                     return;
@@ -161,25 +162,27 @@
                 $scope.expediente.$promise.then(
                     function(data) {
                         if(data.count>0){
-                            $scope.digital[i].encontrado=data.count;
+                            $scope.digital[$scope.count].encontrado=data.count;
                             
 
                         }else{
-                            $scope.digital[i].encontrado=data.count;
-                            $scope.createExpedient(i);
+                            $scope.digital[$scope.count].encontrado=data.count;
+                            $scope.createExpedient($scope.count);
                         }
                         if(data.count>1){
                             alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)
 
                         }
-                        alert("new row");
+                        $scope.count=$scope.count+1;
 
                     },
                     function(error){
                         alert("ha ocurrido un error");
                     }
-                );
 
+                );
+                i=i+1;
+                $scope.searchPlanilla(i);
             };
 
             $scope.createExpedient = function(i){
