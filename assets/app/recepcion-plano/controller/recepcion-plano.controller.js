@@ -164,6 +164,7 @@
 
             }
             $scope.searchPlanilla = function(i) {
+                $scope.created=[];
                 if(i == null){
                     i = 0;
                     $scope.count=0;
@@ -193,9 +194,9 @@
                             $scope.digital[$scope.count].encontrado=data.count;
                             if(data.count==1){
                                 $scope.digital[$scope.count].recordId=data.result[0]._id;
-                                var params={};
+                                /*var params={};
                                 params.metadata={};
-                                params["recordId"] =  $scope.digital[i]["recordId"];
+                                params["recordId"] =  $scope.digital[$scope.count].recordId;
                                 for(var j = 0; j < $scope.all_columns.length; j++){
                                     if($scope.all_columns[j].columnName !=null){
 
@@ -204,17 +205,20 @@
                                         if($scope.all_columns[j].columnName=="documentOwner")params.metadata.documentOwner = $scope.digital[$scope.count][$scope.all_columns[j].title];
 
                                     }
-                                }
-                                $scope.rta=DocumentsService.createDocument(params);
-                                $scope.rta.$promise.then(
-                                                    function(data) {});
+                                }*/
+
                             }else{
-                                $scope.digital[$scope.count].recordId="NO ENCONTRADO";
+                                $scope.digital[$scope.count].recordId="NO MIGRADO";
                             }
 
                         }else{
-                            $scope.digital[$scope.count].encontrado=data.count;
-                            $scope.createExpedient($scope.count);
+                            if(data.count==0){
+                                $scope.digital[$scope.count].encontrado=data.count;
+                                $scope.createExpedient($scope.count);
+
+                                //$scope.searchPlanilla(i);
+                                //return;
+                            }
 
                         }
                         if(data.count>1){
@@ -242,25 +246,35 @@
                     openingDate: new Date()
                 };
                 for(var j = 0; j < $scope.all_columns.length; j++){
-                    if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].buscar == 1){
+                    if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].datoaMigrar == 1){
                         params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                     }
                 }
+                 var count1=0;
+                 var count2=0;
+                 var crear=true;
+                if($scope.created.length==0){crear=false;$scope.created.push(params);}else
+                for(var j=0; j<$scope.created.length;j++){
+                    for(var e in $scope.created[j]){
+                        count1++;
+                        if($scope.created[j][e]==params[e]){
+                            count2++;
+
+                        }
+                        if(e=="openingDate")count2++;
+
+                    }
+                    if(count1==count2){return}else{count2=0;count1=0;};
+                }
+                if(crear)$scope.created.push(params);
                 $scope.expedient = ExpedienteService.createExpedient(params);
 
-                $scope.expedient.$promise.then(
-                    function(data) {
-                        $scope.createFileInExpedient(i);
-                    },
-                    function(error){
-                        alert("ha ocurrido un error");
-                    }
-                );
+
                 
             };
             
             $scope.createFileInExpedient = function(i){
-                i = i+1;
+
                 $scope.searchPlanilla(i);
                 
             };
