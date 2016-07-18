@@ -23,6 +23,9 @@
             $scope.fields[1] = {key : 'openingDate',value: 'Fecha de apertura'};
             $scope.fields[2] = {key : 'ownerDocumentType',value: 'Tipo documento del dueño'};
             $scope.fields[3] = {key : 'ownerDocumentNumber',value: 'Numero documento del dueño'};
+            $scope.fields[4] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
+            $scope.fields[5] = {key : 'name',value: 'Nombre del Archivo'};
+            $scope.fields[5] = {key : 'documentOwner',value: 'Dueño'};
 
             SeriesService.getAllTrds().$promise.then(function(data){
                 $scope.trds = data;
@@ -84,7 +87,9 @@
                         });
                     });
 
-
+                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
+                    $scope.fields[$scope.fields.length] = {key : 'name',value: 'Nombre del Archivo'};
+                    $scope.fields[$scope.fields.length] = {key : 'documentOwner',value: 'Dueño'};
                     $scope.selectedMetadata = [];
                     $scope.showSpinner = !1;
                 }
@@ -163,11 +168,16 @@
                     function(data) {
                         if(data.count>0){
                             $scope.digital[$scope.count].encontrado=data.count;
-                            
+                            if(data.count=1){
+                                $scope.digital[$scope.count].recordId=data.result[0]._id;
+                            }else{
+                                $scope.digital[$scope.count].recordId="NO ENCONTRADO";
+                            }
 
                         }else{
                             $scope.digital[$scope.count].encontrado=data.count;
                             $scope.createExpedient($scope.count);
+
                         }
                         if(data.count>1){
                             alert("más de una coincidencia en el registro "+$scope.digital[$scope.count].id)

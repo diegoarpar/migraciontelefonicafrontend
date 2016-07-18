@@ -6,6 +6,7 @@ function txtToJson(txtToJson, $scope){
         str+="{";
         str+="\"id\":\""+i+"\",";
         str+="\"encontrado\":"+-1+",";
+        str+="\"recordId\":"+"\"NO ENCONTRADO\""+",";
         for(var j=0;j<txtToJson[i].split(',').length;j++){
             if(!head)$scope.all_columns.push({"title": ""+txtToJson[0].split(',')[j].trim()+"","type": "string","checked": true});
             if(txtToJson[0].split(',')[j]){

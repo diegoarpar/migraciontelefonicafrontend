@@ -6,10 +6,10 @@
         angular.module("wpc")
             .factory('AuthenticationFactory', AuthenticationFactory);
 
-        AuthenticationFactory.$inject =  ['$resource'];
+        AuthenticationFactory.$inject =  ['$resource','ApiAutentication'];
 
-        function AuthenticationFactory($resource) {
-            return $resource("http://104.196.61.177/autheo/api/users/archivista/tokens", {}, {
+        function AuthenticationFactory($resource,ApiAutentication) {
+            return $resource(ApiAutentication.url+"/autheo/api/users/archivista/tokens", {}, {
                 auth: {
                     method: 'POST',
                     isArray:false,

@@ -90,8 +90,10 @@
           <span ng-if="c.columnName">
               -- buscar:
               <input type="checkbox" ng-model="c.buscar"/>
-              datoaMigrar:
+              Dato Migrar Expediente:
               <input type="checkbox" ng-model="c.datoaMigrar"/>
+              Dato Migrar Documento:
+              <input type="checkbox" ng-model="c.documentMetadata"/>
           </span>
 
       </div>
@@ -113,6 +115,7 @@
         <tr>
             <th> id </th>
             <th> encontrado</th>
+            <th> recordId</th>
 
           <th ng-repeat="c in columns">{{ c.title }}
           </th>
@@ -132,6 +135,7 @@
      <script type="text/ng-template" id="display">
             <th>{{c.id}}</th>
             <td >{{c.encontrado}}</td>
+            <td >{{c.recordId}}</td>
           <td ng-repeat="e in columns">{{ c[e.title] }}</td>
 
             <button ng-click="editRow(c)" class="btn green">Modificar</button>
@@ -141,7 +145,8 @@
     </script>
     <script type="text/ng-template" id="edit">
         <td>{{c.id}}</td>
-        <td ><input type="checkbox" ng-model="c.encontrado"></td>
+        <td >{{c.encontrado}}</td>
+        <td >{{c.recordId}}</td>
         <td ng-repeat="e in columns"><input type="text" ng-model="digital.selected[e.title]" /></td>
         <td>
             <button ng-click="saveRow($index)" class="btn green">Guardar</button>
