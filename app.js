@@ -8,6 +8,9 @@ var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource', 'ngCooki
    app.constant('ApiAutentication', {
      url: 'http://104.196.61.177/'
     });
+    app.constant('ApiServerSide', {
+         url: 'http://localhost:2020/'
+        });
 app.constant('ApiDocumentManager', {
  url: 'http://104.196.61.177/'
 });

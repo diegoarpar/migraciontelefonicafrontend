@@ -6,49 +6,20 @@
         angular.module("wpc")
             .factory('DocumentsService', DocumentsService);
 
-        DocumentsService.$inject =  ["$resource", 'SessionService','ApiDocumentManager'];
+        DocumentsService.$inject =  ["$resource", 'SessionService','ApiServerSide'];
 
-        function DocumentsService($resource, SessionService,ApiDocumentManager) {
-            var electronicRecords = ApiDocumentManager.url+"document-manager/api/";
-            var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
-            var url = electronicRecords + "electronic-records/"
+        function DocumentsService($resource, SessionService,ApiServerSide) {
+            var electronicRecords = ApiServerSide.url+"migracion/";
+            var headers = {'Content-Type': 'application/json', 'Accept': 'application/json','Authorization':"Bearer "+SessionService.getAuthorizationToken()};
+            var url = electronicRecords + "docs/"
                 , param = {}
                 , functions = {
-                getExpedient: {
-                    params: {skip:0,limit:10},
-                    method: "GET",
-
-                    url: url + "query",
-                    headers:headers
-                },
-                createExpedient: {
-                    method: "post",
-
-                    url: url + "",
-                    headers:headers
-                },
-                getOperationMetadataForDocType: {
-                    method: "GET",
-                    isArray: !0,
-                    url: url + "/operation_documentType/:documentTypeCode",
-                    headers:headers
-                },
-                getChildrenMetadata: {
-                    method: "GET",
-                    isArray: !0,
-                    url: url + "/children-metadata",
-                    headers:headers
-                },
-                createChildrenMetadata: {
-                    method: "POST",
-                    url: url + "/children-metadata",
-                    headers:headers
-                },
-                updateChildrenMetadata: {
-                    method: "PUT",
-                    url: url + "/children-metadata",
-                    headers:headers
-                }
+                    createDocument: {
+                        method: "POST",
+                        params : {},
+                        url: url + "insert-file",
+                        headers:headers
+                    }
             };
 
             return $resource(url,param,functions);

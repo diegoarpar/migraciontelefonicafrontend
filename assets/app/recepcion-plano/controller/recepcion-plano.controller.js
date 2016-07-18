@@ -7,9 +7,9 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService','SessionService','ApiDocumentManager','$http','$timeout', '$q'];
+                    ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService','SessionService','ApiDocumentManager','$http','$timeout', '$q','DocumentsService'];
 
-        function RecepcionPlanoController($scope, $location, SeriesService, MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q) {
+        function RecepcionPlanoController($scope, $location, SeriesService, MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q,DocumentsService) {
 
             $scope.all_columns=[];
             $scope.columns=[];
@@ -23,9 +23,9 @@
             $scope.fields[1] = {key : 'openingDate',value: 'Fecha de apertura'};
             $scope.fields[2] = {key : 'ownerDocumentType',value: 'Tipo documento del dueño'};
             $scope.fields[3] = {key : 'ownerDocumentNumber',value: 'Numero documento del dueño'};
-            $scope.fields[4] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
-            $scope.fields[5] = {key : 'name',value: 'Nombre del Archivo'};
-            $scope.fields[5] = {key : 'documentOwner',value: 'Dueño'};
+            $scope.fields[4] = {key : 'name',value: 'Nombre del Archivo'};
+            $scope.fields[5] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
+            $scope.fields[6] = {key : 'documentOwner',value: 'Dueño'};
 
             SeriesService.getAllTrds().$promise.then(function(data){
                 $scope.trds = data;
@@ -87,8 +87,8 @@
                         });
                     });
 
-                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
                     $scope.fields[$scope.fields.length] = {key : 'name',value: 'Nombre del Archivo'};
+                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
                     $scope.fields[$scope.fields.length] = {key : 'documentOwner',value: 'Dueño'};
                     $scope.selectedMetadata = [];
                     $scope.showSpinner = !1;
@@ -140,6 +140,29 @@
                 };
                 $scope.digital.push($scope.inserted);
             };
+            $scope.confirmDocuments = function() {
+
+                for(var i=0;i<$scope.digital.length;i++){
+                    var params={};
+                        params.metadata={};
+                        params["recordId"] =  $scope.digital[i]["recordId"];
+                    for(var j = 0; j < $scope.all_columns.length; j++){
+                        if($scope.all_columns[j].columnName !=null){
+
+                            if($scope.all_columns[j].columnName=="name")params["name"] = $scope.digital[i][$scope.all_columns[j].title];
+                            if($scope.all_columns[j].columnName=="documentTypeCode")params["documentTypeCode"] = $scope.digital[i][$scope.all_columns[j].title];
+                            if($scope.all_columns[j].columnName=="documentOwner")params.metadata.documentOwner = $scope.digital[i][$scope.all_columns[j].title];
+
+                        }
+                    }
+                    $scope.rta=DocumentsService.createDocument(params);
+                    $scope.rta.$promise.then(
+                                        function(data) {});
+                }
+
+
+
+            }
             $scope.searchPlanilla = function(i) {
                 if(i == null){
                     i = 0;
@@ -168,8 +191,23 @@
                     function(data) {
                         if(data.count>0){
                             $scope.digital[$scope.count].encontrado=data.count;
-                            if(data.count=1){
+                            if(data.count==1){
                                 $scope.digital[$scope.count].recordId=data.result[0]._id;
+                                var params={};
+                                params.metadata={};
+                                params["recordId"] =  $scope.digital[i]["recordId"];
+                                for(var j = 0; j < $scope.all_columns.length; j++){
+                                    if($scope.all_columns[j].columnName !=null){
+
+                                        if($scope.all_columns[j].columnName=="name")params["name"] = $scope.digital[$scope.count][$scope.all_columns[j].title];
+                                        if($scope.all_columns[j].columnName=="documentTypeCode")params["documentTypeCode"] = $scope.digital[$scope.count][$scope.all_columns[j].title];
+                                        if($scope.all_columns[j].columnName=="documentOwner")params.metadata.documentOwner = $scope.digital[$scope.count][$scope.all_columns[j].title];
+
+                                    }
+                                }
+                                $scope.rta=DocumentsService.createDocument(params);
+                                $scope.rta.$promise.then(
+                                                    function(data) {});
                             }else{
                                 $scope.digital[$scope.count].recordId="NO ENCONTRADO";
                             }
