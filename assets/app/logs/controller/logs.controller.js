@@ -4,12 +4,12 @@
 (function(){
         'use strict';
         angular.module("wpc")
-            .controller('RecepcionPlanoController', RecepcionPlanoController);
+            .controller('Logs', Logs);
 
-        RecepcionPlanoController.$inject =
+        Logs.$inject =
                     ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService','SessionService','ApiDocumentManager','$http','$timeout', '$q','DocumentsService'];
 
-        function RecepcionPlanoController($scope, $location, SeriesService, MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q,DocumentsService) {
+        function Logs($scope, $location, SeriesService, MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q,DocumentsService) {
 
             $scope.all_columns=[];
             $scope.columns=[];
