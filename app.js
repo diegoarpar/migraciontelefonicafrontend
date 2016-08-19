@@ -23,7 +23,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         );
         $routeProvider.when('/logs', {
             templateUrl: 'assets/app/logs/view/logs.html',
-            controller: 'Logs'}
+            controller: 'LogsController'}
         );
         $routeProvider.when('/login', {
             templateUrl: 'assets/app/authentication/login.html',

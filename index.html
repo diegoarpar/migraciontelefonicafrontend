@@ -16,8 +16,11 @@ and open the template in the editor.
 
     </head>
     <body>
+        <a ng-href="#migracion-telefonica">Migración|</a>
+        <a ng-href="#logs">Logs</a>
         <div class="slide-animate-container">
         <div   class="slide-animate" ng-include src="'assets/app/authentication/login.html'"></div>
+
         </div>
     <div ng-view></div>
 
@@ -50,5 +53,7 @@ and open the template in the editor.
         <script type="text/javascript" src="assets/app/authentication/login.state.js"></script>
 
         <script type="text/javascript" src="assets/app/authentication/session.service.js"></script>
+
+        <script type="text/javascript" src="assets/app/logs/controller/logs.controller.js"></script>
     </body>
 </html>
