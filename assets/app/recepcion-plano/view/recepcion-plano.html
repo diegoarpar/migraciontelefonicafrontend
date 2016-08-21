@@ -1,125 +1,161 @@
-
+<br>
 <div id="page-wrapper">
-    <div data-toggle="collapse" data-target="#arbol" class="ui-content">Seleccione el Árbol</div>
+    <div data-toggle="collapse" data-target="#arbol" class="ui-content subheaders">2. Seleccionar TRD / Serie / Subserie</div>
     <div id="arbol" class="collapse">
-    <div class="row">
-        <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
 
-            <div ui-tree class="col-md-3 well" id="tree-root">
-                <ol ui-tree-nodes ng-model="trds">
-                    <li ng-repeat="trd in trds" ui-tree-node collapsed="true">
-                        <div data-nodrag ui-tree-handle ng-click="setPointer();toggle(this)">
-                            <a data-nodrag>
+                <div ui-tree class="col-md-3 well" id="tree-root">
+                    <ol ui-tree-nodes ng-model="trds">
+                        <li ng-repeat="trd in trds" ui-tree-node collapsed="true">
+                            <div data-nodrag ui-tree-handle ng-click="setPointer();toggle(this)">
+                                <a data-nodrag>
                                 <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
 
                                 </span></a>
-                            <a>{{trd.name}}</a>
-                        </div>
-                        <ol ui-tree-nodes="" ng-model="trd.series" ng-class="{hidden: collapsed}">
-                            <li ng-repeat="serie in trd.series" ui-tree-node collapsed="true">
-                                <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code]);toggle(this)">
-                                    <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder': collapsed, 'fa fa-folder-open': !collapsed}">
+                                <a>{{trd.name}}</a>
+                            </div>
+                            <ol ui-tree-nodes="" ng-model="trd.series" ng-class="{hidden: collapsed}">
+                                <li ng-repeat="serie in trd.series" ui-tree-node collapsed="true">
+                                    <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code]);toggle(this)">
+                                        <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder': collapsed, 'fa fa-folder-open': !collapsed}">
 
                                     </span></a>
-                                    <a>{{serie.name}}</a>
-                                </div> <ol ui-tree-nodes="" ng-model="serie.subseries" ng-class="{hidden: collapsed}">
-                                <li ng-repeat="subserie in serie.subseries" ui-tree-node collapsed="true">
-                                    <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code,subserie.code]);toggle(this)">
-                                        <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder-o': collapsed, 'fa fa-folder-open-o': !collapsed}">
+                                        <a>{{serie.name}}</a>
+                                    </div> <ol ui-tree-nodes="" ng-model="serie.subseries" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="subserie in serie.subseries" ui-tree-node collapsed="true">
+                                        <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code,subserie.code]);toggle(this)">
+                                            <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder-o': collapsed, 'fa fa-folder-open-o': !collapsed}">
 
                                         </span>
-                                        </a>
-                                        <a>{{subserie.name}}</a>
-                                    </div>
-                                </li>
-                            </ol>
-                                <ol ui-tree-nodes="" ng-model="serie.documentTypes" ng-class="{hidden: collapsed}">
-                                    <li ng-repeat="documentType in serie.documentTypes" ui-tree-node>
-                                        <div data-nodrag ui-tree-handle>
-                                            <a ng-click="loadDocumentTypeMetadata(documentType)">
-                                                {{documentType.name}}
                                             </a>
+                                            <a>{{subserie.name}}</a>
                                         </div>
                                     </li>
                                 </ol>
-                            </li>
-                        </ol>
-                    </li>
-                </ol>
+                                    <ol ui-tree-nodes="" ng-model="serie.documentTypes" ng-class="{hidden: collapsed}">
+                                        <li ng-repeat="documentType in serie.documentTypes" ui-tree-node>
+                                            <div data-nodrag ui-tree-handle>
+                                                <a ng-click="loadDocumentTypeMetadata(documentType)">
+                                                    {{documentType.name}}
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
             </div>
         </div>
-        </div></div>
 
 
-    <h4>Seleccionar criterios de búsqueda por metadatos</h4>
-    <button type="button" class="btn btn-info marginated ng-binding ng-scope"
-            ng-repeat="m in availableMetadata" ui-draggable="true" drag="m"
-            on-drop-success="dropSuccessHandler($event,$index,availableMetadata)"
-            draggable="true">
-        {{m.name}}
-    </button>
-
-
-  <h2>ARCHIVO PLANO trd:{{query.trd}} series:{{query.series}} subseries:{{query.subSeries}}</h2>
-  <div data-toggle="collapse" data-target="#desdeArchivo" class="ui-content">Desde archivo</div>
-  <div id="desdeArchivo" class="collapse">
-    <input type="file" class="btn green"  on-read-file="showContent($fileContent)" />
-
+        <h4>Seleccionar criterios de búsqueda por metadatos</h4>
+        <button type="button" class="btn btn-info marginated ng-binding ng-scope"
+                ng-repeat="m in availableMetadata" ui-draggable="true" drag="m"
+                on-drop-success="dropSuccessHandler($event,$index,availableMetadata)"
+                draggable="true">
+            {{m.name}}
+        </button>
     </div>
+    <br>
+    <div class="subheaders">3. Cargar Archivo</div>
+
+    <input id="uploadFile" placeholder="" disabled="disabled" />
+    <div class="fileUpload btn green">
+        <span>Seleccionar</span>
+        <input id="uploadBtn" type="file" class="upload" on-read-file="showContent($fileContent)" />
+    </div>
+    <script>
+        document.getElementById("uploadBtn").onchange = function () {
+            document.getElementById("uploadFile").value = this.value;};
+    </script>
 
     <div ng-if="digital.length>0">
-        <h3>Cantidad de garantías: {{ digital.length }}</h3>
+        <h3 class="subheaders">Cantidad de garantías: {{ digital.length }}</h3>
 
     </div>
     <div ng-show="false">
         <h3>Radicado: {{ numero[0].number }}</h3>
-
     </div>
+
+    <br>
+
     <div class="form-group">
-    <div class="col-sm-12" >
-        <div data-toggle="collapse" data-target="#demo" class="ui-content">Ver Columnas</div>
-      <div id="demo" class="collapse">
-      <div ng-repeat="c in all_columns" >
-          ver:
-          <input type="checkbox" ng-model="c.checked"/>
-           {{c.title}}
+        <div data-toggle="collapse" data-target="#demo" class="ui-content subheaders">4. Configurar Datos</div>
+        <div id="demo" class="collapse">
 
-          <select  ng-model="c.columnName" >
-              <option ng-repeat="r in fields" value="{{r.key}}">{{r.value}}</option>
-          </select>
-          <span ng-if="c.columnName">
-              -- buscar:
-              <input type="checkbox" ng-model="c.buscar"/>
-              Dato Migrar Expediente:
-              <input type="checkbox" ng-model="c.datoaMigrar"/>
-              Dato Migrar Documento:
-              <input type="checkbox" ng-model="c.documentMetadata"/>
-          </span>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th>Ver</th>
+                        <th>Columna</th>
+                        <th>Dato</th>
+                        <th>Dato Único</th>
+                        <th>Dato Migrar Expediente</th>
+                        <th>Dato Migrar Documento</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="c in all_columns">
+                        <td>
+                            <input type="checkbox" ng-model="c.checked"/>
+                        </td>
+                        <td>
+                            {{c.title}}
+                        </td>
+                        <td>
+                            <select  ng-model="c.columnName" >
+                                <option ng-repeat="r in fields" value="{{r.key}}">{{r.value}}</option>
+                            </select>
+                        </td>
+                        <td style="text-align: center;">
+                            <span ng-if="c.columnName" >
+                                  <input type="checkbox" ng-model="c.buscar" />
+                                </span>
+                        </td>
+                        <td style="text-align: center;" >
+                            <span ng-if="c.columnName">
+                                  <input type="checkbox" ng-model="c.datoaMigrar"/>
+                                </span>
+                        </td>
+                        <td style="text-align: center;" >
+                            <span ng-if="c.columnName">
+                                  <input type="checkbox" ng-model="c.documentMetadata"/>
+                                </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div  >
 
-      </div>
-          <div>
-              <select  ng-model="columnName" >
-                  <option ng-repeat="r in fields" value="{{r.key}}">{{r.value}}</option>
-              </select>
-          <button class="btn green" ng-click="addColumn(columnName)">Agregar Columna</button>
-          </div>
+                </span>
+
+            </div>
+            <div>
+                <select  ng-model="columnName" >
+                    <option ng-repeat="r in fields" value="{{r.key}}">{{r.value}}</option>
+                </select>
+                <button class="btn green" ng-click="addColumn(columnName)">Agregar Columna</button>
+            </div>
+        </div>
     </div>
 
-      </div>
-    </div>
-
-
-
-    <table  ng-table="tablaGarantias" show-filter="true"   export-csv="csv" separator=";" class="table table-striped table-hover table-condensed " >
+    <h3 class="subheaders">Archivo cargado</h3>
+    <table  ng-table="tablaGarantias" show-filter="true"   export-csv="csv" separator=";" class="table table-striped table-hover table-condensed table-bordered" >
         <thead>
         <tr>
             <th> id </th>
             <th> encontrado</th>
             <th> recordId</th>
 
-          <th ng-repeat="c in columns">{{ c.title }}
-          </th>
-          <th> opciones </th>
+            <th ng-repeat="c in columns">{{ c.title }}
+            </th>
+            <th> </th>
+            <th></th>
         </tr>
         </thead>
         <tr ng-repeat="c in digital" ng-include="getTemplate(c)">
@@ -132,14 +168,17 @@
         </tr>
     </table>
 
-     <script type="text/ng-template" id="display">
-            <th>{{c.id}}</th>
-            <td >{{c.encontrado}}</td>
-            <td >{{c.recordId}}</td>
-          <td ng-repeat="e in columns">{{ c[e.title] }}</td>
-
+    <script type="text/ng-template" id="display">
+        <th>{{c.id}}</th>
+        <td >{{c.encontrado}}</td>
+        <td >{{c.recordId}}</td>
+        <td ng-repeat="e in columns">{{ c[e.title] }}</td>
+        <td>
             <button ng-click="editRow(c)" class="btn green">Modificar</button>
+        </td>
+        <td>
             <button ng-click="removeRow($index)" class="btn btn-danger">Quitar</button>
+        </td>
         </th>
 
     </script>
@@ -154,10 +193,10 @@
         </td>
     </script>
 
-    <div>
-      <button class="btn green" ng-click="addRow()">Agregar Registro</button>
-      <button class="btn green" ng-click="searchPlanilla()">Migrar Expedientes</button>
-      <button class="btn green" ng-click="confirmDocuments()">Confirmar Documentos</button>
+    <div style="float: right;">
+        <button class="btn green" ng-click="addRow()">Agregar Registro</button>
+        <button class="btn green" ng-click="searchPlanilla()">Migrar Expedientes</button>
+        <button class="btn green" ng-click="confirmDocuments()">Confirmar Documentos</button>
     </div>
 </div>
 

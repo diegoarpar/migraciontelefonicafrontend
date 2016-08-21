@@ -5,24 +5,27 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html ng-app="wpc">
-    <head >
-        <title>MIGRACION TELEFONICA</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="assets/external/css/bootstrap/bootstrap.min.css" >
-        <link rel="stylesheet" href="assets/external/css/bootstrap/bootstrap-responsive.min.css" >
-        <link rel="stylesheet" href="assets/external/js/angular-ui-tree/angular-ui-tree.min.css" >
-        <link rel="stylesheet" href="assets/app/app.css" >
+<head >
+    <title>MIGRACION TELEFONICA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/external/css/bootstrap/bootstrap.min.css" >
+    <link rel="stylesheet" href="assets/external/css/bootstrap/bootstrap-theme.min.css" >
+    <link rel="stylesheet" href="assets/external/js/angular-ui-tree/angular-ui-tree.min.css" >
+    <link rel="stylesheet" href="assets/app/app.css" >
 
-    </head>
+</head>
     <body>
+    <h3 style="padding-top: 15px; padding-bottom:15px;">
+        MIGRACIÓN MASIVA DE EXPEDIENTES
+    </h3>
         <a ng-href="#migracion-telefonica">Migración|</a>
         <a ng-href="#logs">Logs</a>
-        <div class="slide-animate-container">
-        <div   class="slide-animate" ng-include src="'assets/app/authentication/login.html'"></div>
 
+        <div class="slide-animate-container">
+            <div   class="slide-animate" ng-include src="'assets/app/authentication/login.html'"></div>
         </div>
-    <div ng-view></div>
+        <div ng-view></div>
 
         <script type="text/javascript" src="assets/external/js/angular/angular.min.js"></script>
         <script type="text/javascript" src="assets/external/js/angular/angular-route.js"></script>
@@ -44,11 +47,12 @@ and open the template in the editor.
         <script type="text/javascript" src="assets/app/recepcion-plano/controller/recepcion-plano.controller.js"></script>
         <script type="text/javascript" src="assets/app/recepcion-plano/service/expediente.services.js"></script>
         <script type="text/javascript" src="assets/app/recepcion-plano/service/series.services.js"></script>
+        <script type="text/javascript" src="assets/app/recepcion-plano/service/trd-series.services.js"></script>
         <script type="text/javascript" src="assets/app/recepcion-plano/service/documents.services.js"></script>
         <script type="text/javascript" src="assets/app/directive/on-read-file.directive.js"></script>
 
 
-        <script type="text/javascript" src="assets/app/authentication/authentication.service.js"></script>
+        <script type="text/javascript" src="assets/app/authentication/users.service.js"></script>
         <script type="text/javascript" src="assets/app/authentication/login.controller.js"></script>
         <script type="text/javascript" src="assets/app/authentication/login.state.js"></script>
 

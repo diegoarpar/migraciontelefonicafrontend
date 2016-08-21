@@ -1,16 +1,26 @@
-<div class=" green" ng-controller="LoginController">
-<div data-toggle="collapse" data-target="#ingreso" class="ui-content" >Login <div ng-if="autenticado"> Autenticado OK </div> </div>
+<div ng-controller="LoginController">
+<div class=" subheaders" >
+    <div data-toggle="collapse" data-target="#ingreso" class="ui-content" >1. Login <div ng-if="autenticado"> Autenticado OK </div> </div>
+</div>
 <div id="ingreso" class="collapse">
-        <form class="navbar-search pull-center">
-            <span>Usuario</span> <input type="text" ng-model="nombre" class="span2" placeholder="Usuario">
-            <br/>
-            <span>Contraseña</span><input type="password" ng-model="contrasena" class="span2" placeholder="Contaseña">
-            <br/>
+    <form class="navbar-search pull-center">
+        <table>
+            <tbody>
+            <tr>
+                <td><span style="float:right;">Usuario:</span> </td>
+                <td><input type="text" ng-model="nombre" class="span2" placeholder="Usuario"></td>
+            </tr>
+            <tr>
+                <td><span style="float:right;">Contraseña:</span></td>
+                <td><input type="password" ng-model="contrasena" class="span2" placeholder="Contaseña"></td>
+                <td>&nbsp; &nbsp;<input type="submit" value="Ingresar"  ng-click="ok(nombre,contrasena)" class="btn green"/></td>
+            </tr>
 
-            <input type="submit" value="Ingresar"  ng-click="ok(nombre,contrasena)" class="btn green"/>
-            <input type="submit" value="Volver" ng-click="cancel()"class="btn green"/>
-        </form>
-    
-<div/>
+            </tbody>
+        </table>
+
+
+    </form>
+
 </div>
 </div>

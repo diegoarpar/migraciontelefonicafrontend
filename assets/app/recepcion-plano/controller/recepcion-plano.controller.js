@@ -7,9 +7,11 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService','SessionService','ApiDocumentManager','$http','$timeout', '$q','DocumentsService'];
+                    ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService',
+                        'SessionService','ApiDocumentManager','$http','$timeout', '$q','DocumentsService', 'TrdSeriesService'];
 
-        function RecepcionPlanoController($scope, $location, SeriesService, MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q,DocumentsService) {
+        function RecepcionPlanoController($scope, $location, SeriesService,
+                                          MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q,DocumentsService, TrdSeriesService) {
 
             $scope.all_columns=[];
             $scope.columns=[];
@@ -27,7 +29,9 @@
             $scope.fields[5] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
             $scope.fields[6] = {key : 'documentOwner',value: 'Dueño'};
 
-            SeriesService.getAllTrds().$promise.then(function(data){
+            TrdSeriesService.getAccessTrdTrees({
+                username: SessionService.getAuthorizationUserName()
+            }).$promise.then(function(data){
                 $scope.trds = data;
             });
 

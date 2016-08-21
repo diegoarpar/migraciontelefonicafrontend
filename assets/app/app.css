@@ -11,9 +11,10 @@ body {
 	background-repeat: repeat-y;
 	background-position:top;
 	background-attachment:fixed;
-	background-color:white !important;
+	background-color:#ececec !important;
 	margin:0px;
 	font-family: 'Conv_MyriadPro-Regular',Verdana;
+    font-size: 12px;
 }
 .logoImageCerti{
     width: 20%;
@@ -73,16 +74,22 @@ form[editable-form] > div {margin: 10px 0;}
 }
 
 .btn-primary {
-    background-color:#10628a! important;
+    background-color:#e10b00! important;
 }
 button>*{
-    background-color:#10628a! important;
+    background-color:#e10b00! important;
 }
 
 .green{
-background-color:#10628a! important;
+background-color:#e10b00! important;
 color:white !important;
 background-image: none! important;
+}
+
+.subheaders{
+    background-color:#c3c3c3! important;
+    color:#515151 !important;
+    background-image: none! important;
 }
 
 .navbar{
@@ -94,16 +101,15 @@ color:white !important;
 }
 
 .table th{
-background-color:#10628a! important;
-color:white !important;
+background-color:ececec! important;
+color:black !important;
 }
 
 h3, h2, h1 {
-    background-color:#10628a! important;
+    background-color:#e10b00! important;
     color: white !important;
     text-align:center !important;
     font-family:'Signika', Arial, Helvetica, sans-serif !important;
-    border-radius: 10px !important;
 }
 
 
@@ -114,7 +120,7 @@ h4.panel-title{
 font-family:'Signika', Arial, Helvetica, sans-serif !important;
 }
 aside{
- background-color:#10628a! important;
+ background-color:#e10b00! important;
  color: white !important;
 }
 
@@ -244,3 +250,27 @@ li{
 .dragover {
     border: 5px dashed blue;
 }
+
+
+
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    width:350px;
+}
+
+
+

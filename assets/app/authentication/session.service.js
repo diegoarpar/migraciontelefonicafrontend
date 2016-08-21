@@ -61,11 +61,11 @@
                     return $cookies.get("EEauthorizationSystemRole") ;
                 }
                 ,
-                b.getAuthorizationmUserRole = function() {
+                b.getAuthorizationUserRoles= function() {
                     return $cookies.get("EEauthorizationUserRole") ;
                 }
                 ,
-                b.setAuthorizationUserRole = function(b) {
+                b.setAuthorizationUserRoles = function(b) {
                     return $cookies.put("EEauthorizationUserRole",b) ;
                 }
                 ,
