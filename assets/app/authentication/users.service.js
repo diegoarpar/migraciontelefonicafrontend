@@ -10,7 +10,6 @@
 
         function UsersService($resource, ApiAutentication, SessionService) {
             var recordManager = ApiAutentication.url;
-            var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
             var url = recordManager + "auth-manager/api/users"
                 , param = {}
                 , functions = {
@@ -20,8 +19,13 @@
                 },
                 getUser: {
                     method: "GET",
-                    headers: headers,
-                    url: url + "/:username"
+                    url: url + "/:username",
+                    transformRequest: function(data, headersGetter) {
+                        var currentHeaders = headersGetter();
+                        angular.extend(currentHeaders, {'Accept': 'application/json','Authorization': SessionService.getAuthorizationToken()});
+                        return data;
+                    }
+
                 },
                 getUserImage: {
                     method: "GET",
