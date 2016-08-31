@@ -13,7 +13,7 @@
                                 <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
 
                                 </span></a>
-                                <a>{{trd.name}}</a>
+                                <a>{{trd.trd}}</a>
                             </div>
                             <ol ui-tree-nodes="" ng-model="trd.series" ng-class="{hidden: collapsed}">
                                 <li ng-repeat="serie in trd.series" ui-tree-node collapsed="true">

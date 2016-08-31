@@ -15,7 +15,10 @@ app.constant('ApiDocumentManager', {
  url: 'http://104.196.101.153:9049/'
 });
 
-
+app.config(["$httpProvider", function($httpProvider) {
+    $httpProvider.interceptors.push("HttpInterceptorService")
+}
+])
 
 app.config(['$routeProvider', function ($routeProvider) {
 

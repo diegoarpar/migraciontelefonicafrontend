@@ -57,7 +57,7 @@
                     $cookies.put("EEauthorizationSystemRole",b) ;
                 }
                 ,
-                b.getAuthorizationSystemRole = function() {
+                b.getAuthorizationSystemRoles = function() {
                     return $cookies.get("EEauthorizationSystemRole") ;
                 }
                 ,
