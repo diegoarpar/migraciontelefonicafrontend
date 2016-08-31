@@ -14,6 +14,9 @@ var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource', 'ngCooki
 app.constant('ApiDocumentManager', {
  url: 'http://104.196.101.153:9049/'
 });
+
+
+
 app.config(['$routeProvider', function ($routeProvider) {
 
 

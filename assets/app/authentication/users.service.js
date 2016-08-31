@@ -19,12 +19,8 @@
                 },
                 getUser: {
                     method: "GET",
-                    url: url + "/:username",
-                    transformRequest: function(data, headersGetter) {
-                        var currentHeaders = headersGetter();
-                        angular.extend(currentHeaders, {'Accept': 'application/json','Authorization': SessionService.getAuthorizationToken()});
-                        return data;
-                    }
+                    url: url + "/:username"
+
 
                 },
                 getUserImage: {

@@ -80,6 +80,16 @@
                 b
         }
 
-    }
-)();
+
+
+    angular.module("wpc").factory("HttpInterceptorService", ["SessionService", function(a) {
+        return {
+            request: function(b) {
+                return b.headers = b.headers || {},
+                    a.hasAuthorizationToken() ? b.headers.Authorization = a.getAuthorizationToken() : b.headers.Authorization = "anonymous",
+                    b
+            }
+        }
+    }]);
+})();
 
