@@ -7,13 +7,11 @@
 
         <div>
         <h4>Fecha inicio</h4>
-            <input kendo-date-picker
-                   ng-model="dateString"
-                   k-ng-model="dateObject"
-                   style="width: 100%;" />
+            <input type="date" ng-model="startDate" format="dd/MM/yyyy" value="01-02-2008"/>
         </div>
         <div>
         <h4>Fecha fin</h4>
+            <input type="date" ng-model="endDate"  format="dd/MM/yyyy"/>
         </div>
     <div>
         <button class="btn green" ng-click="consultandoLogs()">Consultar Logs</button>
