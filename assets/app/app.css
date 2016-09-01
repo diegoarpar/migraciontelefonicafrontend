@@ -205,7 +205,7 @@ li{
 }
     .rightbar ul li:hover a,
     .rightbar ul li:hover a i {
-        color: #23b7e5;
+        color: #e10b00;
         text-decoration: none;
     }
 
@@ -234,7 +234,9 @@ li{
     column-count: 2;
 }
 
-
+a {
+    color: #515151;
+}
 
 /*upload-files*/
 
