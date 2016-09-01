@@ -3,7 +3,7 @@ var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource', 'ngCooki
 
 
   app.constant('ApiRecordManager', {
-   url: 'http://104.196.101.153:9049/'
+   url: 'http://104.196.61.177/'
   });
    app.constant('ApiAutentication', {
      url: 'http://104.196.61.177/'

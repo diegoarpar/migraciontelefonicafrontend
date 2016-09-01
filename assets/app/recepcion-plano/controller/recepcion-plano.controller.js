@@ -59,9 +59,17 @@
                     $scope.query[d[key]] = value,
                     key == datos.length - 1 && ($scope.pointer = value)
                 });
-                $scope.showSpinner = !0,
+                $scope.showSpinner = !0;
+
+                if(datos.lenght == 3) {
+                    $scope.parentCode = $scope.query.trd + '-' + $scope.query.series +  '-' + $scope.query.subSeries;
+                }
+                if(datos.length == 2 ){
+                    $scope.parentCode = $scope.query.trd + '-' + $scope.query.series;
+                }
+
                 MetadataService.getChildrenMetadata({
-                        parentCode: $scope.pointer
+                        parentCode: $scope.parentCode
                 }, successMetadata, errorMetadata)
                 
 

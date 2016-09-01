@@ -53,7 +53,15 @@
 
                 }
                 ,
-                b.setAuthorizationSystemRole = function(b) {
+                b.setAuthorizationUserDocumentType = function(b) {
+                    $cookies.put("EEauthorizationUserDocumentType", b)
+                }
+                ,
+                b.setAuthorizationUserDocumentNumber = function(b) {
+                    $cookies.put("EEauthorizationUserDocumentNumber", b)
+                }
+                ,
+                b.setAuthorizationSystemRoles = function(b) {
                     $cookies.put("EEauthorizationSystemRole",b) ;
                 }
                 ,

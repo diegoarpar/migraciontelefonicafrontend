@@ -17,14 +17,14 @@
                             </div>
                             <ol ui-tree-nodes="" ng-model="trd.series" ng-class="{hidden: collapsed}">
                                 <li ng-repeat="serie in trd.series" ui-tree-node collapsed="true">
-                                    <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code]);toggle(this)">
+                                    <div data-nodrag ui-tree-handle ng-click="setPointer([trd.trd,serie.name]);toggle(this)">
                                         <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder': collapsed, 'fa fa-folder-open': !collapsed}">
 
                                     </span></a>
                                         <a>{{serie.name}}</a>
                                     </div> <ol ui-tree-nodes="" ng-model="serie.subseries" ng-class="{hidden: collapsed}">
                                     <li ng-repeat="subserie in serie.subseries" ui-tree-node collapsed="true">
-                                        <div data-nodrag ui-tree-handle ng-click="setPointer([trd.code,serie.code,subserie.code]);toggle(this)">
+                                        <div data-nodrag ui-tree-handle ng-click="setPointer([trd.trd,serie.name,subserie.name]);toggle(this)">
                                             <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder-o': collapsed, 'fa fa-folder-open-o': !collapsed}">
 
                                         </span>
