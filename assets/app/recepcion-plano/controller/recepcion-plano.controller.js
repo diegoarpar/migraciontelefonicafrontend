@@ -131,7 +131,7 @@
                 $scope.docType = datos;
                 angular.forEach(datos, function(value, key){
                     MetadataService.getOperationMetadataForDocType({
-                        documentTypeCode: key.code
+                        documentTypeCode: value.code
                     }, successOperationMetadata, errorOperationMetadata);
                 });
 
@@ -143,9 +143,8 @@
 
             function successOperationMetadata(datos){
                 angular.forEach(datos, function(value,key){
-                    $scope.all_columns.push(datos)
+                    $scope.all_columns.push(value.name);
                 });
-
             }
 
             function errorOperationMetadata(error){
