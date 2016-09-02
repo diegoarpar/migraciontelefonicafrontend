@@ -7,10 +7,10 @@
             .controller('RecepcionPlanoController', RecepcionPlanoController);
 
         RecepcionPlanoController.$inject =
-                    ['$scope', '$location', 'SeriesService', 'MetadataService','ExpedienteService',
+                    ['$scope', '$location','LogsServices', 'SeriesService', 'MetadataService','ExpedienteService',
                         'SessionService','ApiDocumentManager','$http','$timeout', '$q','DocumentsService', 'TrdSeriesService'];
 
-        function RecepcionPlanoController($scope, $location, SeriesService,
+        function RecepcionPlanoController($scope, $location,LogsServices, SeriesService,
                                           MetadataService,ExpedienteService,SessionService,ApiDocumentManager,$http,$timeout,$q,DocumentsService, TrdSeriesService) {
 
             $scope.all_columns=[];
@@ -105,10 +105,10 @@
                     });
 
                     $scope.fields[$scope.fields.length] = {key : 'name',value: 'Nombre del Archivo'};
-                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
-                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
+                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Código Tipo Documental'};
                     $scope.fields[$scope.fields.length] = {key : 'documentOwner',value: 'Dueño'};
-                    $scope.fields[$scope.fields.length] = {key : 'documentType',value: 'Nombre del tipo de documento'};
+                    $scope.fields[$scope.fields.length] = {key : 'documentType',value: 'Nombre Tipo de Documental'};
+                    $scope.fields[$scope.fields.length] = {key : 'confidentialityLevel',value: 'Nivel de Confidencialidad'};
                     $scope.selectedMetadata = [];
                     $scope.showSpinner = !1;
                 }
@@ -316,6 +316,10 @@
                 }
                 if(crear)$scope.created.push(params);
                 $scope.expedient = ExpedienteService.createExpedient(params);
+                var params2=params;
+                params2.dateLog= new Date();
+                params2.eventLog= "Request_Create_Expediente";
+                LogsServices.insertLog(params2);
 
 
                 
