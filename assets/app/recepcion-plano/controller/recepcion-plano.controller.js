@@ -143,7 +143,8 @@
 
             function successOperationMetadata(datos){
                 angular.forEach(datos, function(value,key){
-                    $scope.all_columns.push(value.name);
+                    $scope.fields.push({key : value.name, value: value.name});
+
                 });
             }
 
