@@ -12,7 +12,7 @@ var app= angular.module('wpc', [ 'ngRoute','ui.bootstrap','ngResource', 'ngCooki
          url: 'http://localhost:2020/'
         });
 app.constant('ApiDocumentManager', {
- url: 'http://104.196.101.153:9049/'
+ url: 'http://104.196.61.177/'
 });
 
 app.config(["$httpProvider", function($httpProvider) {
