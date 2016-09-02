@@ -28,6 +28,9 @@
             $scope.fields[4] = {key : 'name',value: 'Nombre del Archivo'};
             $scope.fields[5] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
             $scope.fields[6] = {key : 'documentOwner',value: 'Dueño'};
+            $scope.fields[7] = {key : 'confidentialityLevel',value: 'Nivel de Confidencialidad'};
+            $scope.fields[8] = {key : 'documentType',value: 'Nombre del tipo de documento'};
+
 
             TrdSeriesService.getAccessTrdTrees({
                 username: SessionService.getAuthorizationUserName()
@@ -103,7 +106,9 @@
 
                     $scope.fields[$scope.fields.length] = {key : 'name',value: 'Nombre del Archivo'};
                     $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
+                    $scope.fields[$scope.fields.length] = {key : 'documentTypeCode',value: 'Tipo de Documento'};
                     $scope.fields[$scope.fields.length] = {key : 'documentOwner',value: 'Dueño'};
+                    $scope.fields[$scope.fields.length] = {key : 'documentType',value: 'Nombre del tipo de documento'};
                     $scope.selectedMetadata = [];
                     $scope.showSpinner = !1;
                 }
@@ -179,10 +184,18 @@
                         params["recordId"] =  $scope.digital[i]["recordId"];
                     for(var j = 0; j < $scope.all_columns.length; j++){
                         if($scope.all_columns[j].columnName !=null){
+                            if($scope.all_columns[j].documentMetadata){
 
-                            if($scope.all_columns[j].columnName=="name")params["name"] = $scope.digital[i][$scope.all_columns[j].title];
-                            if($scope.all_columns[j].columnName=="documentTypeCode")params["documentTypeCode"] = $scope.digital[i][$scope.all_columns[j].title];
-                            if($scope.all_columns[j].columnName=="documentOwner")params.metadata.documentOwner = $scope.digital[i][$scope.all_columns[j].title];
+                                if($scope.all_columns[j].columnName!="confidentialityLevel"&&$scope.all_columns[j].columnName!="documentTypeCode"&&$scope.all_columns[j].columnName!="name"){
+
+                                    params.metadata[$scope.all_columns[j].columnName]=$scope.digital[i][$scope.all_columns[j].title];
+                                }else{
+                                    params[$scope.all_columns[j].columnName]=$scope.digital[i][$scope.all_columns[j].title];
+                                }
+                            }
+                            //if($scope.all_columns[j].columnName=="name")params["name"] = $scope.digital[i][$scope.all_columns[j].title];
+                            //if($scope.all_columns[j].columnName=="documentTypeCode")params["documentTypeCode"] = $scope.digital[i][$scope.all_columns[j].title];
+                            //if($scope.all_columns[j].columnName=="documentOwner")params.metadata.documentOwner = $scope.digital[i][$scope.all_columns[j].title];
 
                         }
                     }
@@ -203,13 +216,13 @@
                 }
 
                 var params = {
-                    series: $scope.query.series,
-                    subSeries: $scope.query.subSeries,
-                    trd: $scope.query.trd,
                     skip: "0",
                     limit: "999999"
                     //,ownerDocumentType: "C.C"
                 };
+                if($scope.id){
+                    params.selectedLevel= $scope.id
+                }
                 for(var j = 0; j < $scope.all_columns.length; j++){
                     if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].buscar == 1){
                         params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
@@ -268,13 +281,18 @@
 
             $scope.createExpedient = function(i){
                 var params = {
-                    series: $scope.query.series,
-                    subSeries: $scope.query.subSeries,
                     trd: $scope.query.trd,
                     //ownerDocumentType: "C.C",
                     openingDate: new Date(),
                     lastTrdLevelId: $scope.id
                 };
+                if($scope.query.subSeries != null){
+                    params.subSeries = $scope.query.trd + '-' + $scope.query.series + '-' + $scope.query.subSeries;
+                }
+                if($scope.query.series != null){
+                    params.series = $scope.query.trd + '-' + $scope.query.series;
+                }
+
                 for(var j = 0; j < $scope.all_columns.length; j++){
                     if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].datoaMigrar == 1){
                         params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
