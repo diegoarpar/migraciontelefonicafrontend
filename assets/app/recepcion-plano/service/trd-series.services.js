@@ -9,7 +9,9 @@
         TrdSeriesService.$inject =  ['$resource', 'SessionService'];
 
         function TrdSeriesService($resource, SessionService) {
+
             var recordManager = "http://104.196.61.177/record-manager/api";
+            var url2 = recordManager + "/trds";
             var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
             var url = recordManager + "/trds-access-controls"
                 , param = {}
@@ -67,6 +69,11 @@
                     method: "PUT",
                     url: url + "/:idTrd/responsibles",
                     headers: headers
+                },
+                getTreeNodeChildsByCode: {
+                    method: "GET",
+                    isArray: !0,
+                    url: url2 + "/:treeNodeCode/tree-node-childs"
                 }
             };
 

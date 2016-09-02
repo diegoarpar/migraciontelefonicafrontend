@@ -107,18 +107,18 @@
                 }
                 //Get doctypes from series or subseries
                 if($scope.query.subSeries != null){
-                    SeriesService.getDocTypesBySubSeries({
-                        trd: $scope.query.trd,
-                        series: $scope.query.series,
-                        subSeries: $scope.query.subSeries
-                    }, successDocType, errorDocType)
+
+                    TrdSeriesService.getTreeNodeChildsByCode({
+                        treeNodeCode: $scope.query.trd + '-' + $scope.query.series +  '-' + $scope.query.subSeries,
+                        nodeType: "DOCUMENT-TYPE"
+                    }, successDocType, errorDocType);
                 }
                 else {
                     if ($scope.query.series != null) {
-                        SeriesService.getDocTypesBySeries({
-                            trd: $scope.query.trd,
-                            series: $scope.query.series
-                        }, successDocType, errorDocType)
+                        TrdSeriesService.getTreeNodeChildsByCode({
+                            treeNodeCode: $scope.query.trd + '-' + $scope.query.series,
+                            nodeType: "DOCUMENT-TYPE"
+                        }, successDocType, errorDocType);
                     }
                 }
             }
@@ -128,11 +128,28 @@
             }
 
             function successDocType(datos){
+                $scope.docType = datos;
+                angular.forEach(datos, function(value, key){
+                    MetadataService.getOperationMetadataForDocType({
+                        documentTypeCode: key.code
+                    }, successOperationMetadata, errorOperationMetadata);
+                });
 
             }
 
             function errorDocType(a) {
                 console.log("error getting resource")
+            }
+
+            function successOperationMetadata(datos){
+                angular.forEach(datos, function(value,key){
+                    $scope.all_columns.push(datos)
+                });
+
+            }
+
+            function errorOperationMetadata(error){
+
             }
 
 
@@ -172,9 +189,7 @@
                                         function(data) {});
                 }
 
-
-
-            }
+            };
             $scope.searchPlanilla = function(i) {
                 $scope.created=[];
                 if(i == null){

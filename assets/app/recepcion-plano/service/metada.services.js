@@ -26,6 +26,7 @@
                     url: url + "/documentType",
                     headers:headers
                 },
+
                 getOperationMetadataForDocType: {
                     method: "GET",
                     isArray: !0,
