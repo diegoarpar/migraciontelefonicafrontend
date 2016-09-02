@@ -35,7 +35,7 @@
                 $scope.trds = data;
             });
 
-            $scope.setPointer = function(datos) {
+            $scope.setPointer = function(id, datos) {
                 if (!datos)
                     return $scope.pointer = datos,
                         $scope.selectedMetadata = [],
@@ -67,6 +67,8 @@
                 if(datos.length == 2 ){
                     $scope.parentCode = $scope.query.trd + '-' + $scope.query.series;
                 }
+
+                $scope.id = id.id;
 
                 MetadataService.getChildrenMetadata({
                         parentCode: $scope.parentCode
@@ -270,7 +272,8 @@
                     subSeries: $scope.query.subSeries,
                     trd: $scope.query.trd,
                     //ownerDocumentType: "C.C",
-                    openingDate: new Date()
+                    openingDate: new Date(),
+                    lastTrdLevelId: $scope.id
                 };
                 for(var j = 0; j < $scope.all_columns.length; j++){
                     if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].datoaMigrar == 1){
