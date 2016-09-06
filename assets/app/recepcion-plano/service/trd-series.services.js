@@ -6,11 +6,11 @@
         angular.module("wpc")
             .factory('TrdSeriesService', TrdSeriesService);
 
-        TrdSeriesService.$inject =  ['$resource', 'SessionService'];
+        TrdSeriesService.$inject =  ['$resource', 'SessionService','ApiRecordManager'];
 
-        function TrdSeriesService($resource, SessionService) {
+        function TrdSeriesService($resource, SessionService,ApiRecordManager) {
 
-            var recordManager = "http://104.196.61.177/record-manager/api";
+            var recordManager = ApiRecordManager+"record-manager/api";
             var url2 = recordManager + "/trds";
             var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
             var url = recordManager + "/trds-access-controls"
