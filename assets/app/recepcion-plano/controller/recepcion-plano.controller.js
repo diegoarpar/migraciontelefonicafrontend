@@ -217,7 +217,8 @@
 
                 var params = {
                     skip: "0",
-                    limit: "999999"
+                    limit: "999999",
+                    selectedLevel: $scope.id
                     //,ownerDocumentType: "C.C"
                 };
                 if($scope.id){
