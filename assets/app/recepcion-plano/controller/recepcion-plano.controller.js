@@ -179,6 +179,7 @@
             $scope.confirmDocuments = function() {
 
                 for(var i=0;i<$scope.digital.length;i++){
+                if($scope.digital[i].encontrado==1){
                     var params={};
                         params.metadata={};
                         params["recordId"] =  $scope.digital[i]["recordId"];
@@ -203,8 +204,60 @@
                     $scope.rta.$promise.then(
                                         function(data) {});
                 }
+                }
 
             };
+            var findExp = function(i,params) {
+                var deferred = $q.defer();
+                $scope.expediente = ExpedienteService.getExpedient(params);
+                $scope.expediente.$promise.then(function(datos){
+
+                    deferred.resolve(datos)
+                })
+                return deferred.promise;
+            };
+
+             var secuencia = function(i){
+                    var params = {
+                        skip: "0",
+                        limit: "999999",
+                        selectedLevel: $scope.id
+                        //,ownerDocumentType: "C.C"
+                    };
+                    if($scope.id){
+                        params.selectedLevel= $scope.id
+                    }
+                    for(var j = 0; j < $scope.all_columns.length; j++){
+                        if($scope.all_columns[j].columnName !=null && $scope.all_columns[j].buscar == 1){
+                            params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                        }
+                    }
+                    findExp(i,params).then(function(data){
+
+                    console.log(i);
+                    console.log(data);
+
+                    $scope.digital[i].encontrado=data.count;
+                    $scope.digital[i].recordId="NO MIGRADO";
+                    if(data.count==1){
+                            $scope.digital[i].recordId=data.result[0]._id;
+
+                    }
+                    else if(data.count==0){
+                            $scope.createExpedient(i);
+                    }
+                    else if(data.count>1){
+                        alert("más de una coincidencia en el registro "+$scope.digital[i].id)
+
+                    }
+                     i=i+1;
+                    secuencia(i);
+                    $scope.scans = datos;
+
+                })
+            }
+
+
             $scope.searchPlanilla = function(i) {
                 $scope.created=[];
                 if(i == null){
@@ -229,26 +282,16 @@
                         params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                     }
                 }
-                $scope.expediente = ExpedienteService.getExpedient(params);
 
-                $scope.expediente.$promise.then(
+                  secuencia(i);
+
+                /*$scope.expediente.$promise.then(
                     function(data) {
                         if(data.count>0){
                             $scope.digital[$scope.count].encontrado=data.count;
                             if(data.count==1){
                                 $scope.digital[$scope.count].recordId=data.result[0]._id;
-                                /*var params={};
-                                params.metadata={};
-                                params["recordId"] =  $scope.digital[$scope.count].recordId;
-                                for(var j = 0; j < $scope.all_columns.length; j++){
-                                    if($scope.all_columns[j].columnName !=null){
 
-                                        if($scope.all_columns[j].columnName=="name")params["name"] = $scope.digital[$scope.count][$scope.all_columns[j].title];
-                                        if($scope.all_columns[j].columnName=="documentTypeCode")params["documentTypeCode"] = $scope.digital[$scope.count][$scope.all_columns[j].title];
-                                        if($scope.all_columns[j].columnName=="documentOwner")params.metadata.documentOwner = $scope.digital[$scope.count][$scope.all_columns[j].title];
-
-                                    }
-                                }*/
 
                             }else{
                                 $scope.digital[$scope.count].recordId="NO MIGRADO";
@@ -275,9 +318,9 @@
                         alert("ha ocurrido un error");
                     }
 
-                );
-                i=i+1;
-                $scope.searchPlanilla(i);
+                );*/
+                //i=i+1;
+                //$scope.searchPlanilla(i);
             };
 
             $scope.createExpedient = function(i){
