@@ -10,7 +10,7 @@
 
         function TrdSeriesService($resource, SessionService,ApiRecordManager) {
 
-            var recordManager = ApiRecordManager+"record-manager/api";
+            var recordManager = ApiRecordManager.url+"record-manager/api";
             var url2 = recordManager + "/trds";
             var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
             var url = recordManager + "/trds-access-controls"

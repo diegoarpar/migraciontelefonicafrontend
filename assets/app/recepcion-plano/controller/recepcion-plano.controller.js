@@ -36,7 +36,14 @@
                 username: SessionService.getAuthorizationUserName()
             }).$promise.then(function(data){
                 $scope.trds = data;
-            });
+
+            }).catch(
+                  function (error) {
+                     SessionService.setAuthorizationToken("");
+                     SessionService.removeCookie();
+
+                  }
+              );;
 
             $scope.setPointer = function(id, datos) {
                 if (!datos)
@@ -234,8 +241,8 @@
                     }
                     findExp(i,params).then(function(data){
 
-                    console.log(i);
-                    console.log(data);
+                    //console.log(i);
+                    //console.log(data);
 
                     $scope.digital[i].encontrado=data.count;
                     $scope.digital[i].recordId="NO MIGRADO";

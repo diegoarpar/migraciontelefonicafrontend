@@ -12,6 +12,7 @@
 
             // callback for ng-click 'createNewUser':
             $scope.autenticado=false;
+
             if(SessionService.getAuthorizationToken())$scope.autenticado=true;
             $scope.ok = function (user, pass) {
                 $scope.username = user;
@@ -23,6 +24,7 @@
                     organizationId: "telefonica"
                 });
                 rta.$promise.then(login, error);
+
 
             };
 
@@ -46,16 +48,20 @@
                             SessionService.setAuthorizationUserDocumentType(data.userDocumentType),
                             SessionService.setAuthorizationUserDocumentNumber(data.userDocumentNumber);
                     var f = data.systemRolesIds;
-                    if (f.indexOf("archivista") > -1){
 
+                    if (f.indexOf("archivista") > -1){
+                        $window.location.reload();
                     }
                     else {
-                        SessionService.removeCookie()
+                        SessionService.removeCookie();
                     }
                 }
             }
             function error(b) {
+                SessionService.setAuthorizationToken("");
                 alert("Usuario o Contraseña incorrecta");
+                $window.location.reload();
+                SessionService.removeCookie();
                 /*a.isLoading = !1,
                     a.password = "";
                 var d = "";
