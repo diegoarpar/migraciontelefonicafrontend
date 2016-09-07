@@ -51,6 +51,7 @@
 
                     if (f.indexOf("archivista") > -1){
                         $window.location.reload();
+
                     }
                     else {
                         SessionService.removeCookie();

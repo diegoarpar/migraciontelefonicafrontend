@@ -26,6 +26,7 @@
                     url: url + "/:id/confidentiality",
                     headers: headers
                 },
+
                 getAccessTrdTrees: {
                     method: "GET",
                     url: url + "/trd-access-trees/:username",

@@ -35,6 +35,7 @@
             TrdSeriesService.getAccessTrdTrees({
                 username: SessionService.getAuthorizationUserName()
             }).$promise.then(function(data){
+
                 $scope.trds = data;
 
             }).catch(
