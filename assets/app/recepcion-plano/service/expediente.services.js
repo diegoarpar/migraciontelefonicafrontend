@@ -25,7 +25,10 @@
                     method: "post",
                     isArray: true,
                     url: url + "",
-                    headers:headers
+                    headers:headers,
+                    transformResponse: function(data, headersGetter){
+                        return data
+                    }
                 },
                 getOperationMetadataForDocType: {
                     method: "GET",

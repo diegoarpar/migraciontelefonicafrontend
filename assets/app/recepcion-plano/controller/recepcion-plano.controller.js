@@ -31,6 +31,24 @@
             $scope.alerts.splice(0);
         };
 
+        //array to hold the alerts2 to be displayed on the page
+        $scope.alerts2 = [];
+        /**
+         *This function is used to push alerts2 onto the alerts2 array.
+         */
+        $scope.addAlert2 = function(type, message) {
+            //add the new alert into the array of alerts2 to be displayed.
+            $scope.alerts2.push({type: type, msg: message});
+        };
+        /**
+         *This function closes the alert
+         */
+        $scope.closeAlert2 = function() {
+            //remove the alert from the array to avoid showing previous alerts2
+            $scope.alerts2.splice(0);
+        };
+
+
 
 
         $scope.all_columns = [];
@@ -225,18 +243,25 @@
                             }
                         }
                     }
-                    $scope.rta = DocumentsService.createDocument(params);
-                    $scope.rta.$promise.then(function () {
-                        $scope.addAlert('success', 'Documento ' + i + ' creado correctamente');
-                    },
-                        function () {
-                            $scope.addAlert('error', 'Documento ' + i + ' no ha podido ser creado correctamente');
-                        }
-                    );
+                    $scope.uploadFile(params, i);
                 }
             }
 
         };
+
+        $scope.uploadFile =  function (params, i){
+            var rta = DocumentsService.createDocument(params);
+            rta.$promise.then(function () {
+                    $scope.addAlert2('success', 'Documento ' + i + ' creado correctamente');
+                },
+                function () {
+                    $scope.addAlert2('error', 'Documento ' + i + ' no ha podido ser creado correctamente');
+                }
+            );
+        }
+
+
+
         var findExp = function (i, params) {
             var deferred = $q.defer();
                 $scope.expediente = ExpedienteService.getExpedient(params);
@@ -361,6 +386,7 @@
 
             $scope.expedient[i] = ExpedienteService.createExpedient(params);
             $scope.expedient[i].$promise.then(function(data){
+                $scope.addAlert('success', 'Documento ' + data.join() + ' creado correctamente');
                 $scope.digital[i].recordId = data.join();
             });
             var params2 = params;
