@@ -1,4 +1,7 @@
 <br>
+
+<uib-alert ng-repeat="alert in alerts" dismiss-on-timeout="2000" type="{{alert.type}}" close="closeAlert()">{{alert.msg}}</uib-alert>
+
 <div id="page-wrapper">
     <div data-toggle="collapse" data-target="#arbol" class="ui-content subheaders">2. Seleccionar TRD / Serie / Subserie</div>
     <div id="arbol" class="collapse">
@@ -62,10 +65,10 @@
     <br>
     <div class="subheaders">3. Cargar Archivo</div>
 
-    <input id="uploadFile" placeholder="" disabled="disabled" />
+    <input id="uploadFile" placeholder="{{fileName}}" disabled="disabled" ng-model="fileName"/>
     <div class="fileUpload btn green">
         <span>Seleccionar</span>
-        <input id="uploadBtn" type="file" class="upload" on-read-file="showContent($fileContent)" />
+        <input id="uploadBtn" placeholder="{{fileName}}" type="file" class="upload" on-read-file="showContent($fileContent)" ng-model="fileName"/>
     </div>
     <script>
         document.getElementById("uploadBtn").onchange = function () {
