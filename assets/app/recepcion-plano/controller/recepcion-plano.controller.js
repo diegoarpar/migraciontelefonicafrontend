@@ -89,14 +89,14 @@
             angular.forEach(datos, function (value, key) {
                 var d = ["trd", "series", "subSeries"];
                 $scope.query[d[key]] = value;
-                key === datos.length - 1 && ($scope.pointer = value)
+                key == datos.length - 1 && ($scope.pointer = value)
             });
             $scope.showSpinner = !0;
 
-            if (datos.length === 3) {
+            if (datos.length == 3) {
                 $scope.parentCode = $scope.query.trd + '-' + $scope.query.series + '-' + $scope.query.subSeries;
             }
-            if (datos.length === 2) {
+            if (datos.length == 2) {
                 $scope.parentCode = $scope.query.trd + '-' + $scope.query.series;
             }
 
@@ -209,7 +209,7 @@
         $scope.confirmDocuments = function () {
 
             for (var i = 0; i < $scope.digital.length; i++) {
-                if ($scope.digital[i].encontrado === 1) {
+                if ($scope.digital[i].encontrado == 1) {
                     var params = {};
                     params.metadata = {};
                     params["recordId"] = $scope.digital[i]["recordId"];
@@ -257,7 +257,7 @@
                 params.selectedLevel = $scope.id
             }
             for (var j = 0; j < $scope.all_columns.length; j++) {
-                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar === 1) {
+                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar == 1) {
                     params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                 }
             }
@@ -265,19 +265,18 @@
 
                 $scope.digital[i].encontrado = data.count;
                 $scope.digital[i].recordId = "NO MIGRADO";
-                if (data.count === 1) {
+                if (data.count == 1) {
                     $scope.digital[i].recordId = data.result[0]._id;
 
                 }
-                else if (data.count === 0) {
+                else if (data.count == 0) {
                     $scope.createExpedient(i);
                 }
                 else if (data.count > 1) {
-                    alert("más de una coincidencia en el registro " + $scope.digital[i].id);
-                    $scope.digital[i].recordId = data.result[0]._id;
+                    alert("más de una coincidencia en el registro " + $scope.digital[i].id + ". El documento no podra ser migrado");
                 }
                 i = i + 1;
-                if (i === $scope.digital.length) {
+                if (i == $scope.digital.length) {
                     return;
                 }
                 secuencia(i);
@@ -293,7 +292,7 @@
                 i = 0;
                 $scope.count = 0;
             }
-            if (i === $scope.digital.length) {
+            if (i == $scope.digital.length) {
                 return;
             }
 
@@ -330,27 +329,27 @@
             }
 
             for (var j = 0; j < $scope.all_columns.length; j++) {
-                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].datoaMigrar === 1) {
+                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].datoaMigrar == 1) {
                     params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                 }
             }
             var count1 = 0;
             var count2 = 0;
             var crear = true;
-            if ($scope.created.length === 0) {
+            if ($scope.created.length == 0) {
                 crear = false;
                 $scope.created.push(params);
             } else
                 for (j = 0; j < $scope.created.length; j++) {
                     for (var e in $scope.created[j]) {
                         count1++;
-                        if ($scope.created[j][e] === params[e]) {
+                        if ($scope.created[j][e] == params[e]) {
                             count2++;
                         }
-                        if (e === "openingDate")
+                        if (e == "openingDate")
                             count2++;
                     }
-                    if (count1 === count2) {
+                    if (count1 == count2) {
                         return
                     } else {
                         count2 = 0;
@@ -386,7 +385,7 @@
 
         $scope.getTemplate = function (c) {
             if ($scope.digital.selected) {
-                if (c.id === $scope.digital.selected.id)
+                if (c.id == $scope.digital.selected.id)
                     return 'edit';
                 else return 'display';
             }
