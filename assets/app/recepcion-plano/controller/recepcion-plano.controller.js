@@ -310,7 +310,7 @@
                     params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                 }
             }
-
+            $scope.expedient = {};
             secuencia(i);
         };
 
@@ -358,7 +358,11 @@
                 }
             if (crear)
                 $scope.created.push(params);
-            $scope.expedient = ExpedienteService.createExpedient(params);
+
+            $scope.expedient[i] = ExpedienteService.createExpedient(params);
+            $scope.expedient[i].$promise.then(function(data){
+                $scope.digital[i].recordId = data.join();
+            });
             var params2 = params;
             params2.dateLog = new Date();
             params2.eventLog = "Request_Create_Expediente";

@@ -23,7 +23,7 @@
                 },
                 createExpedient: {
                     method: "post",
-
+                    isArray: true,
                     url: url + "",
                     headers:headers
                 },
