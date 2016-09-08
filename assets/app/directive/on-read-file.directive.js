@@ -27,7 +27,7 @@
                             });
                         };
 
-                        reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
+                        reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0], 'ISO-8859-1');
                     });
                 }
             };
