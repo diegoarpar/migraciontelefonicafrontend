@@ -389,7 +389,7 @@
                 $scope.addAlert('success', 'Documento ' + data.join() + ' creado correctamente');
                 $scope.digital[i].recordId = data.join();
             });
-            var params2 = params;
+            var params2 = angular.copy(params);
             params2.dateLog = new Date();
             params2.eventLog = "Request_Create_Expediente";
             LogsServices.insertLog(params2);
