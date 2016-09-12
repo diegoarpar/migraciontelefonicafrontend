@@ -13,6 +13,7 @@
             var recordManager = ApiRecordManager.url+"record-manager/api";
             var url2 = recordManager + "/trds";
             var headers = {'Accept': 'application/json','Authorization':SessionService.getAuthorizationToken()};
+
             var url = recordManager + "/trds-access-controls"
                 , param = {}
                 , functions = {
@@ -33,6 +34,7 @@
                     isArray: !0,
                     headers: headers
                 },
+
                 saveUsersAccessTrd: {
                     method: "POST",
                     url: url + "/:idTrd/user-access-control",
@@ -75,7 +77,25 @@
                     method: "GET",
                     isArray: !0,
                     url: url2 + "/:treeNodeCode/tree-node-childs"
-                }
+                },
+                getTrdTrees: {
+                    method: "GET",
+                    url: recordManager + "/trds/TRD/get-tree-type",
+                    isArray: !0,
+                    headers: headers
+                    }
+                ,getSeries: {
+                      method: "GET",
+                      url: recordManager + "/trds/:idSerie/get-tree-childrens/SERIE",
+                      isArray: !0,
+                      headers: headers
+                  }
+               ,getSubSeries: {
+                        method: "GET",
+                        url: recordManager + "/trds/:idSubSerie/get-tree-childrens/SUB-SERIE",
+                        isArray: !0,
+                        headers: headers
+                    }
             };
 
             return $resource(url,param,functions);

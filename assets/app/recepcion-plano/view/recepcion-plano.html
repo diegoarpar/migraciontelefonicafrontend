@@ -11,21 +11,21 @@
                 <div ui-tree class="col-md-3 well" id="tree-root">
                     <ol ui-tree-nodes ng-model="trds">
                         <li ng-repeat="trd in trds" ui-tree-node collapsed="true">
-                            <div data-nodrag ui-tree-handle ng-click="setPointer();toggle(this)">
+                            <div data-nodrag ui-tree-handle ng-click="setPointer(trd);toggle(this)">
                                 <a data-nodrag>
                                 <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
 
                                 </span></a>
-                                <a>{{trd.trd}}</a>
+                                <a>{{trd.code}}-{{trd.name}}</a>
                             </div>
                             <ol ui-tree-nodes="" ng-model="trd.series" ng-class="{hidden: collapsed}">
                                 <li ng-repeat="serie in trd.series" ui-tree-node collapsed="true">
-                                    <div data-nodrag ui-tree-handle ng-click="setPointer(serie, [trd.trd,serie.name]);toggle(this)">
+                                    <div data-nodrag ui-tree-handle ng-click="setPointer(serie);toggle(this)">
                                         <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder': collapsed, 'fa fa-folder-open': !collapsed}">
 
                                     </span></a>
-                                        <a>{{serie.name}}</a>
-                                    </div> <ol ui-tree-nodes="" ng-model="serie.subseries" ng-class="{hidden: collapsed}">
+                                        <a>{{serie.code}}-{{serie.name}}</a>
+                                    </div> <ol ui-tree-nodes="" ng-model="trd.serie.subseries" ng-class="{hidden: collapsed}">
                                     <li ng-repeat="subserie in serie.subseries" ui-tree-node collapsed="true">
                                         <div data-nodrag ui-tree-handle ng-click="setPointer(subserie, [trd.trd,serie.name,subserie.name]);toggle(this)">
                                             <a data-nodrag><span class="glyphicon" ng-class="{'fa fa-folder-o': collapsed, 'fa fa-folder-open-o': !collapsed}">

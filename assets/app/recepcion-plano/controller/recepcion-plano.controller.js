@@ -67,13 +67,13 @@
         $scope.fields[5] = {key: 'documentTypeCode', value: 'Tipo de Documento'};
         $scope.fields[6] = {key: 'documentOwner', value: 'Dueño'};
         $scope.fields[7] = {key: 'confidentialityLevel', value: 'Nivel de Confidencialidad'};
-        $scope.fields[8] = {key: 'documentType', value: 'Nombre del tipo de documento'};
+        $scope.fields[8] = {key: 'documentTypeName', value: 'Nombre del tipo de documento'};
 
 
-        TrdSeriesService.getAccessTrdTrees({
-            username: SessionService.getAuthorizationUserName()
+        TrdSeriesService.getTrdTrees({
+            //username: SessionService.getAuthorizationUserName()
         }).$promise.then(function (data) {
-            $scope.addAlert('success', 'Trd cargada correctamente');
+            $scope.addAlert('success', 'Trd(s) cargada(s) correctamente');
             $scope.trds = data;
 
         }).catch(
@@ -85,8 +85,9 @@
             }
         );
 
-        $scope.setPointer = function (id, datos) {
-            if (!datos)
+        $scope.setPointer = function (datos) {
+            if (!datos){
+
                 return $scope.pointer = datos,
                     $scope.selectedMetadata = [],
                     $scope.availableMetadata = [],
@@ -95,16 +96,33 @@
                         openingDate: !0
                     },
                     null;
-            else {
-                $scope.query.subSeries = null;
+            }else {
+                /*$scope.query.subSeries = null;
                 if (datos.length < 2) {
                     $scope.query.series = null;
                 }
                 if (datos.length < 1) {
                     $scope.query.trd = null;
-                }
+                }*/
+                 if(datos.type)
+                            if(datos.type=="TRD"){
+                                $scope.trd=datos;
+                                $scope.trd.series=TrdSeriesService.getSeries({idSerie: $scope.trd.id});
+                                $scope.addAlert('success', 'Serie(s) cargada(s) correctamente');
+                                $scope.parentCode=$scope.trd.code;
+                            }
+                             if(datos.type=="SERIE"){
+                                $scope.trd.serie=datos;
+                                $scope.trd.serie.subseries=TrdSeriesService.getSubSeries({idSubSerie: $scope.trd.serie.id});
+                                $scope.addAlert('success', 'Sub-Serie(s) cargada(s) correctamente');
+                                $scope.parentCode=$scope.trd.serie.code;
+                            }
+                            if(datos.type=="SUB-SERIE"){
+                                $scope.trd.serie.subserie=datos;
+                                $scope.parentCode=$scope.trd.serie.subserie.code;
+                            }
             }
-            angular.forEach(datos, function (value, key) {
+            /*angular.forEach(datos, function (value, key) {
                 var d = ["trd", "series", "subSeries"];
                 $scope.query[d[key]] = value;
                 key == datos.length - 1 && ($scope.pointer = value)
@@ -118,11 +136,14 @@
                 $scope.parentCode = $scope.query.trd + '-' + $scope.query.series;
             }
 
-            $scope.id = id.id;
 
+            $scope.id = id.id;
+            */
             MetadataService.getChildrenMetadata({
                 parentCode: $scope.parentCode
-            }, successMetadata, errorMetadata)
+            }, successMetadata, errorMetadata);
+             $scope.addAlert('success', 'Metadato(s) cargado(s) correctamente');
+
         };
 
         function successMetadata(datos) {
@@ -152,7 +173,7 @@
                 $scope.fields[$scope.fields.length] = {key: 'name', value: 'Nombre del Archivo'};
                 $scope.fields[$scope.fields.length] = {key: 'documentTypeCode', value: 'Código Tipo Documental'};
                 $scope.fields[$scope.fields.length] = {key: 'documentOwner', value: 'Dueño'};
-                $scope.fields[$scope.fields.length] = {key: 'documentType', value: 'Nombre Tipo de Documental'};
+                $scope.fields[$scope.fields.length] = {key: 'documentTypeName', value: 'Nombre Tipo de Documental'};
                 $scope.fields[$scope.fields.length] = {
                     key: 'confidentialityLevel',
                     value: 'Nivel de Confidencialidad'
@@ -234,7 +255,7 @@
                     for (var j = 0; j < $scope.all_columns.length; j++) {
                         if ($scope.all_columns[j].columnName != null) {
                             if ($scope.all_columns[j].documentMetadata) {
-                                if ($scope.all_columns[j].columnName != "confidentialityLevel" && $scope.all_columns[j].columnName != "documentTypeCode" && $scope.all_columns[j].columnName != "name") {
+                                if ($scope.all_columns[j].columnName != "confidentialityLevel" && $scope.all_columns[j].columnName != "documentTypeCode" && $scope.all_columns[j].columnName != "name"&& $scope.all_columns[j].columnName != "documentTypeName" ) {
 
                                     params.metadata[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
                                 } else {
@@ -341,16 +362,22 @@
 
         $scope.createExpedient = function (i) {
             var params = {
-                trd: $scope.query.trd,
+                trd: $scope.trd.code,
+                trdName: $scope.trd.name,
                 //ownerDocumentType: "C.C",
                 openingDate: new Date(),
-                lastTrdLevelId: $scope.id
+                lastTrdLevelId: $scope.trd.id
+
             };
-            if ($scope.query.subSeries != null) {
-                params.subSeries = $scope.query.trd + '-' + $scope.query.series + '-' + $scope.query.subSeries;
+            if ($scope.trd.serie != null) {
+                params.series= $scope.trd.serie.code;
+                params.seriesName= $scope.trd.serie.name;
+                params.lastTrdLevelId= $scope.trd.serie.id;
             }
-            if ($scope.query.series != null) {
-                params.series = $scope.query.trd + '-' + $scope.query.series;
+            if ($scope.trd.serie.subserie != null) {
+                params.subSeries= $scope.trd.serie.subserie.code;
+                params.subSeriesName= $scope.trd.serie.subserie.name;
+                params.lastTrdLevelId= $scope.trd.serie.subserie.id;
             }
 
             for (var j = 0; j < $scope.all_columns.length; j++) {
@@ -386,7 +413,7 @@
 
             $scope.expedient[i] = ExpedienteService.createExpedient(params);
             $scope.expedient[i].$promise.then(function(data){
-                $scope.addAlert('success', 'Documento ' + data.join() + ' creado correctamente');
+                $scope.addAlert('success', 'Expediente ' + data.join() + ' creado correctamente');
                 $scope.digital[i].recordId = data.join();
             });
             var params2 = angular.copy(params);
