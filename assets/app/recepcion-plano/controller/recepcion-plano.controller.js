@@ -116,29 +116,33 @@
                                 $scope.trd.serie.subseries=TrdSeriesService.getSubSeries({idSubSerie: $scope.trd.serie.id});
                                 $scope.addAlert('success', 'Sub-Serie(s) cargada(s) correctamente');
                                 $scope.parentCode=$scope.trd.serie.code;
+                                $scope.trd.serie.documentalTypes=TrdSeriesService.getDocumenType({idSubSerie: $scope.trd.serie.id});
+                                $scope.trd.serie.documentalTypes.$promise.then(function (data) {
+                                   $scope.trd.serie.documentalType=[];
+                                   for(var i=0;i<data.length;i++){
+                                       $scope.trd.serie.documentalType.push(data[i]);
+                                   }
+                                   $scope.loadMetadata();
+                                });
                             }
                             if(datos.type=="SUB-SERIE"){
+
                                 $scope.trd.serie.subserie=datos;
                                 $scope.parentCode=$scope.trd.serie.subserie.code;
+                                $scope.trd.serie.documentalTypes=TrdSeriesService.getDocumenType({idSubSerie: $scope.trd.serie.subserie.id});
+                                $scope.trd.serie.documentalTypes.$promise.then(function (data) {
+                                           $scope.trd.serie.documentalType=[];
+                                           for(var i=0;i<data.length;i++){
+                                               $scope.trd.serie.documentalType.push(data[i]);
+                                           }
+                                           $scope.loadMetadata();
+                                        });
+
                             }
-            }
-            /*angular.forEach(datos, function (value, key) {
-                var d = ["trd", "series", "subSeries"];
-                $scope.query[d[key]] = value;
-                key == datos.length - 1 && ($scope.pointer = value)
-            });
-            $scope.showSpinner = !0;
-
-            if (datos.length == 3) {
-                $scope.parentCode = $scope.query.trd + '-' + $scope.query.series + '-' + $scope.query.subSeries;
-            }
-            if (datos.length == 2) {
-                $scope.parentCode = $scope.query.trd + '-' + $scope.query.series;
-            }
 
 
-            $scope.id = id.id;
-            */
+            }
+
             MetadataService.getChildrenMetadata({
                 parentCode: $scope.parentCode
             }, successMetadata, errorMetadata);
@@ -160,6 +164,7 @@
             else {
                 $scope.isNewMetadata = !1;
                 $scope.childrenMetadata = datos;
+                if(datos)if(datos.length>0)
                 $scope.availableMetadata = datos[0].fields;
 
                 $scope.fields.splice(4, $scope.fields.length - 3);
@@ -292,6 +297,45 @@
             return deferred.promise;
         };
 
+        var findMetadata = function ( params) {
+                var deferred = $q.defer();
+
+                $scope.seriesMetadata = TrdSeriesService.getMetadata({documentType: params.code});
+                $scope.seriesMetadata.$promise.then(function (datos) {
+                    deferred.resolve(datos)
+                });
+            return deferred.promise;
+        };
+        function searchFields(key){
+
+            for(var i=0;i<$scope.fields.length;i++){
+                if($scope.fields[i].key==key)
+                return true;
+            }
+            return false;
+        }
+        $scope.loadMetadata = function () {
+            if($scope.trd)
+                if($scope.trd.serie)
+                    if($scope.trd.serie.documentalType){
+                        for(var i=0;i<$scope.trd.serie.documentalType.length;i++){
+                            findMetadata($scope.trd.serie.documentalType[i]).then(function (data) {
+                                if(data)
+                                for(var j=0;j<data.length;j++){
+                                    var temp={key:data[j].name,value:data[j].name};
+                                    if(!searchFields(temp.key)){
+
+                                        $scope.fields.push(temp);
+                                    }
+                                }
+
+
+                             var e = data;
+                            });
+                        }
+                    }
+
+        };
         var secuencia = function (i) {
             var params = {
                 skip: "0",

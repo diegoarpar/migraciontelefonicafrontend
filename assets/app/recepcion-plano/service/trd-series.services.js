@@ -96,6 +96,18 @@
                         isArray: !0,
                         headers: headers
                     }
+                ,getDocumenType: {
+                     method: "GET",
+                     url: recordManager + "/trds/:idSubSerie/get-tree-childrens/DOCUMENT-TYPE",
+                     isArray: !0,
+                     headers: headers
+                 },
+                 getMetadata: {
+                      method: "GET",
+                      url: recordManager + "/metadata/operation_documentType/:documentType",
+                      isArray: !0,
+                      headers: headers
+                  }
             };
 
             return $resource(url,param,functions);

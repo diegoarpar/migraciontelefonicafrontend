@@ -36,8 +36,8 @@
                                         </div>
                                     </li>
                                 </ol>
-                                    <ol ui-tree-nodes="" ng-model="serie.documentTypes" ng-class="{hidden: collapsed}">
-                                        <li ng-repeat="documentType in serie.documentTypes" ui-tree-node>
+                                    <ol ui-tree-nodes="" ng-model="trd.serie.documentalType" ng-class="{hidden: collapsed}">
+                                        <li ng-repeat="documentType in trd.serie.documentalTyp" ui-tree-node>
                                             <div data-nodrag ui-tree-handle>
                                                 <a ng-click="loadDocumentTypeMetadata(documentType)">
                                                     {{documentType.name}}
@@ -84,7 +84,7 @@
     </div>
 
     <br>
-
+    <!--button class="btn green" ng-click="loadMetadata()">cargarMetadatos</button-->
     <div class="form-group">
         <div data-toggle="collapse" data-target="#demo" class="ui-content subheaders">4. Configurar Datos</div>
         <div id="demo" class="collapse">
