@@ -330,9 +330,10 @@
                                 }
 
 
-                             var e = data;
+
                             });
                         }
+                        $scope.addAlert('success', 'Metadatos de tipo documental cargados');
                     }
 
         };
