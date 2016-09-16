@@ -341,7 +341,7 @@
             var params = {
                 skip: "0",
                 limit: "999999",
-                selectedLevel: $scope.id
+                selectedLevel: $scope.trd.id
                 //,ownerDocumentType: "C.C"
             };
             if ($scope.id) {
