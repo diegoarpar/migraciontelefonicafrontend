@@ -340,10 +340,16 @@
         var secuencia = function (i) {
             var params = {
                 skip: "0",
-                limit: "999999",
+                limit: "10",
                 selectedLevel: $scope.trd.id
                 //,ownerDocumentType: "C.C"
             };
+            if ($scope.trd.serie) {
+                params.selectedLevel = $scope.trd.serie.id;
+            }
+             if ($scope.trd.serie.subserie) {
+                params.selectedLevel = $scope.trd.serie.subserie.id;
+            }
             if ($scope.id) {
                 params.selectedLevel = $scope.id
             }
