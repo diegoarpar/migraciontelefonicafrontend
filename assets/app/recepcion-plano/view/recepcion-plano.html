@@ -68,7 +68,7 @@
     <input id="uploadFile" placeholder="{{fileName}}" disabled="disabled" ng-model="fileName"/>
     <div class="fileUpload btn green">
         <span>Seleccionar</span>
-        <input id="uploadBtn" placeholder="{{fileName}}" type="file" class="upload" on-read-file="showContent($fileContent)" ng-model="fileName"/>
+        <input id="uploadBtn" placeholder="{{fileName}}" type="file" class="upload" on-read-file="showContent($fileContent)" ng-model="fileName" name-of-file="fileName"/>
     </div>
     <script>
         document.getElementById("uploadBtn").onchange = function () {
@@ -156,7 +156,7 @@
             <th> id </th>
             <th> encontrado</th>
             <th> recordId</th>
-
+            <th> archivoGuardado</th>
             <th ng-repeat="c in columns">{{ c.title }}
             </th>
             <th> </th>
@@ -177,6 +177,7 @@
         <th>{{c.id}}</th>
         <td >{{c.encontrado}}</td>
         <td >{{c.recordId}}</td>
+        <td> {{c.fileSave}}</td>
         <td ng-repeat="e in columns">{{ c[e.title] }}</td>
         <td>
             <button ng-click="editRow(c)" class="btn green">Modificar</button>
@@ -191,6 +192,7 @@
         <td>{{c.id}}</td>
         <td >{{c.encontrado}}</td>
         <td >{{c.recordId}}</td>
+        <td> {{c.fileSave}}</td>
         <td ng-repeat="e in columns"><input type="text" ng-model="digital.selected[e.title]" /></td>
         <td>
             <button ng-click="saveRow($index)" class="btn green">Guardar</button>

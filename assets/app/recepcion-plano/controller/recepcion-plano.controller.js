@@ -250,52 +250,9 @@
             };
             $scope.digital.push($scope.inserted);
         };
-        $scope.confirmDocuments = function () {
-
-            for (var i = 0; i < $scope.digital.length; i++) {
-                if ($scope.digital[i].encontrado == 1) {
-                    var params = {};
-                    params.metadata = {};
-                    params["recordId"] = $scope.digital[i]["recordId"];
-                    for (var j = 0; j < $scope.all_columns.length; j++) {
-                        if ($scope.all_columns[j].columnName != null) {
-                            if ($scope.all_columns[j].documentMetadata) {
-                                if ($scope.all_columns[j].columnName != "confidentialityLevel" && $scope.all_columns[j].columnName != "documentTypeCode" && $scope.all_columns[j].columnName != "name"&& $scope.all_columns[j].columnName != "documentTypeName" ) {
-
-                                    params.metadata[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
-                                } else {
-                                    params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
-                                }
-                            }
-                        }
-                    }
-                    $scope.uploadFile(params, i);
-                }
-            }
-
-        };
-
-        $scope.uploadFile =  function (params, i){
-            var rta = DocumentsService.createDocument(params);
-            rta.$promise.then(function () {
-                    $scope.addAlert2('success', 'Documento ' + i + ' creado correctamente');
-                },
-                function () {
-                    $scope.addAlert2('error', 'Documento ' + i + ' no ha podido ser creado correctamente');
-                }
-            );
-        }
 
 
 
-        var findExp = function (i, params) {
-            var deferred = $q.defer();
-                $scope.expediente = ExpedienteService.getExpedient(params);
-                $scope.expediente.$promise.then(function (datos) {
-                    deferred.resolve(datos)
-                });
-            return deferred.promise;
-        };
 
         var findMetadata = function ( params) {
                 var deferred = $q.defer();
@@ -314,6 +271,7 @@
             }
             return false;
         }
+
         $scope.loadMetadata = function () {
             if($scope.trd)
                 if($scope.trd.serie)
@@ -337,6 +295,43 @@
                     }
 
         };
+
+        /**
+         * Search for similar document in the backed, get the id for all the matches.
+         *
+         * @param i, defines the current row for the search documents.
+         * @return none
+         */
+
+
+        $scope.searchPlanilla = function (i) {
+            $scope.created = [];
+            if (i == null) {
+                i = 0;
+                $scope.count = 0;
+            }
+            if (i == $scope.digital.length) {
+                return;
+            }
+
+            var params = {
+                skip: "0",
+                limit: "999999",
+                selectedLevel: $scope.id
+                //,ownerDocumentType: "C.C"
+            };
+            if ($scope.id) {
+                params.selectedLevel = $scope.id
+            }
+            for (var j = 0; j < $scope.all_columns.length; j++) {
+                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar == 1) {
+                    params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                }
+            }
+            $scope.expedient = {};
+            secuencia(i);
+        };
+
         var secuencia = function (i) {
             var params = {
                 skip: "0",
@@ -382,34 +377,15 @@
             })
         };
 
-
-        $scope.searchPlanilla = function (i) {
-            $scope.created = [];
-            if (i == null) {
-                i = 0;
-                $scope.count = 0;
-            }
-            if (i == $scope.digital.length) {
-                return;
-            }
-
-            var params = {
-                skip: "0",
-                limit: "999999",
-                selectedLevel: $scope.id
-                //,ownerDocumentType: "C.C"
-            };
-            if ($scope.id) {
-                params.selectedLevel = $scope.id
-            }
-            for (var j = 0; j < $scope.all_columns.length; j++) {
-                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar == 1) {
-                    params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
-                }
-            }
-            $scope.expedient = {};
-            secuencia(i);
+        var findExp = function (i, params) {
+            var deferred = $q.defer();
+            $scope.expediente = ExpedienteService.getExpedient(params);
+            $scope.expediente.$promise.then(function (datos) {
+                deferred.resolve(datos)
+            });
+            return deferred.promise;
         };
+
 
         $scope.createExpedient = function (i) {
             var params = {
@@ -464,13 +440,22 @@
 
             $scope.expedient[i] = ExpedienteService.createExpedient(params);
             $scope.expedient[i].$promise.then(function(data){
-                $scope.addAlert('success', 'Expediente ' + data.join() + ' creado correctamente');
-                $scope.digital[i].recordId = data.join();
+                var id = "";
+                angular.forEach(data, function(value){
+                    if(typeof value == 'string') {
+                        id = id + value
+                    }
+                });
+                $scope.addAlert('success', 'Expediente ' + id + ' creado correctamente');
+                $scope.digital[i].recordId = id;
+
+                var params2 = angular.copy(params);
+                params2.dateLog = new Date();
+                params2.eventLog = "Request_Create_Expediente";
+                params2.fileName = $scope.fileName;
+                LogsServices.insertLog(params2);
             });
-            var params2 = angular.copy(params);
-            params2.dateLog = new Date();
-            params2.eventLog = "Request_Create_Expediente";
-            LogsServices.insertLog(params2);
+
         };
 
         $scope.createFileInExpedient = function (i) {
@@ -478,6 +463,83 @@
             $scope.searchPlanilla(i);
 
         };
+
+
+        /**
+         * Define upload function in order to upload documents to the backed
+         *
+         * @param none
+         * @return none
+         */
+
+
+        $scope.confirmDocuments = function (i) {
+            $scope.created = [];
+
+            if (i == null) {
+                i = 0;
+                $scope.count = 0;
+            }
+            if (i == $scope.digital.length) {
+                return;
+            }
+
+            if ($scope.digital[i].encontrado == 1 || $scope.digital[i].encontrado == 0) {
+                var params = {};
+                params.metadata = {};
+                params["recordId"] = $scope.digital[i]["recordId"];
+                for (var j = 0; j < $scope.all_columns.length; j++) {
+                    if ($scope.all_columns[j].columnName != null) {
+                        if ($scope.all_columns[j].documentMetadata) {
+                            if ($scope.all_columns[j].columnName != "confidentialityLevel" &&
+                                    $scope.all_columns[j].columnName != "documentTypeCode" &&
+                                    $scope.all_columns[j].columnName != "name"&&
+                                    $scope.all_columns[j].columnName != "documentTypeName"
+                            ) {
+                                params.metadata[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                            } else {
+                                params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                            }
+                        }
+                    }
+                }
+                $scope.uploadFile(params, i).then(function(){
+                    $scope.digital[i].fileSave = 1;
+                    i = i+1;
+                    $scope.confirmDocuments(i);
+                }, function(){
+                    $scope.digital[i].fileSave = 0;
+                    i = i+1;
+                    $scope.confirmDocuments(i);
+                }, function(percentComplete){
+                    $scope.progress = percentComplete;
+                });
+            }
+
+        };
+
+        $scope.uploadFile =  function (params, i){
+
+            var output = [];
+            var deferred = $q.defer();
+            var percentComplete = 0;
+
+            var rta = DocumentsService.createDocument(params);
+            rta.$promise.then(function (data) {
+                    $scope.addAlert2('success', 'Documento ' + i + ' creado correctamente');
+                    deferred.resolve();
+                },
+                function (data) {
+                    $scope.addAlert2('error', 'Documento ' + i + ' no ha podido ser creado correctamente');
+                    deferred.reject()
+                }
+            );
+            return deferred.promise;
+        };
+
+
+
+
 
 
         $scope.addColumn = function (title) {

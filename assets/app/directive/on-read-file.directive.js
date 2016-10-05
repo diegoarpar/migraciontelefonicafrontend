@@ -12,7 +12,9 @@
 
             return {
                 restrict: 'A',
-                scope: false,
+                scope: {
+                    nameOfFile: '='
+                },
                 link: function(scope, element, attrs) {
                     var fn = $parse(attrs.onReadFile);
 
@@ -26,7 +28,7 @@
                                 fn(scope, {$fileContent:onLoadEvent.target.result});
                             });
                         };
-
+                        scope.nameOfFile = (onChangeEvent.srcElement || onChangeEvent.target).files[0].name;
                         reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0], 'ISO-8859-1');
                     });
                 }

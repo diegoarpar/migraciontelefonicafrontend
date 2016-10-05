@@ -1,0 +1,50 @@
+<RestClientRequest>
+  <option name="biscuits">
+    <list />
+  </option>
+  <option name="httpMethod" value="GET" />
+  <option name="urlBase" value="http://104.196.61.177" />
+  <option name="urlPath" value="/document-manager/api/electronic-records/query" />
+  <option name="headers">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="Accept" />
+        <option name="value" value="application/json" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Cache-Control" />
+        <option name="value" value="no-cache" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Authorization" />
+        <option name="value" value="2db654bf05026bb68bb5" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parameters">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="limit" />
+        <option name="value" value="10" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="recordName" />
+        <option name="value" value="HISTORIA+LABORAL+59833699" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="selectedLevel" />
+        <option name="value" value="57d80d87a064c4664f2ca052" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="skip" />
+        <option name="value" value="0" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parametersEnabled" value="true" />
+  <option name="haveTextToSend" value="false" />
+  <option name="haveFileToSend" value="false" />
+  <option name="isFileUpload" value="false" />
+  <option name="textToSend" value="" />
+  <option name="filesToSend" value="" />
+</RestClientRequest>
