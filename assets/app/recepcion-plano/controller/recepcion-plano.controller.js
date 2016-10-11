@@ -14,6 +14,9 @@
     function RecepcionPlanoController($rootScope, $scope, $location, LogsServices,
                                       MetadataService, ExpedienteService, SessionService, $q, DocumentsService, TrdSeriesService) {
 
+        $scope.charge = false;
+        $scope.chargeStyle = 'all';
+
         //array to hold the alerts to be displayed on the page
         $scope.alerts = [];
         /**
@@ -296,6 +299,17 @@
 
         };
 
+
+        $scope.loading = function(boolean){
+            $scope.charge = boolean;
+            if(boolean == true) {
+                $scope.chargeString = 'none';
+            }
+            else{
+                $scope.chargeString = 'all';
+            }
+        };
+
         /**
          * Search for similar document in the backed, get the id for all the matches.
          *
@@ -305,34 +319,23 @@
 
 
         $scope.searchPlanilla = function (i) {
+
+
             $scope.created = [];
             if (i == null) {
+                $scope.loading(true);
                 i = 0;
                 $scope.count = 0;
             }
-            if (i == $scope.digital.length) {
-                return;
-            }
 
-            var params = {
-                skip: "0",
-                limit: "999999",
-                selectedLevel: $scope.id
-                //,ownerDocumentType: "C.C"
-            };
-            if ($scope.id) {
-                params.selectedLevel = $scope.id
-            }
-            for (var j = 0; j < $scope.all_columns.length; j++) {
-                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar == 1) {
-                    params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
-                }
-            }
+
             $scope.expedient = {};
             secuencia(i);
         };
 
         var secuencia = function (i) {
+
+
             var params = {
                 skip: "0",
                 limit: "10",
@@ -368,7 +371,9 @@
                     alert("más de una coincidencia en el registro " + $scope.digital[i].id + ". El documento no podra ser migrado");
                 }
                 i = i + 1;
+
                 if (i == $scope.digital.length) {
+                    $scope.loading(false);
                     return;
                 }
                 secuencia(i);
@@ -449,13 +454,13 @@
                 $scope.addAlert('success', 'Expediente ' + id + ' creado correctamente');
                 $scope.digital[i].recordId = id;
 
-                var params2 = angular.copy(params);
-                params2.dateLog = new Date();
-                params2.eventLog = "Request_Create_Expediente";
-                params2.fileName = $scope.fileName;
-                LogsServices.insertLog(params2);
-            });
 
+            });
+            var params2 = angular.copy(params);
+            params2.dateLog = new Date();
+            params2.eventLog = "Request_Create_Expediente";
+            params2.fileName = $scope.fileName;
+            LogsServices.insertLog(params2);
         };
 
         $scope.createFileInExpedient = function (i) {
@@ -477,10 +482,12 @@
             $scope.created = [];
 
             if (i == null) {
+                $scope.loading(true);
                 i = 0;
                 $scope.count = 0;
             }
             if (i == $scope.digital.length) {
+                $scope.loading(false);
                 return;
             }
 
@@ -503,6 +510,7 @@
                         }
                     }
                 }
+                params["fileName"] = $scope.fileName;
                 $scope.uploadFile(params, i).then(function(){
                     $scope.digital[i].fileSave = 1;
                     i = i+1;

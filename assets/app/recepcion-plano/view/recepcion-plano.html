@@ -1,8 +1,10 @@
 <br>
-
+<div ng-show="charge">
+    <div class="element-block"></div>
+</div>
 <uib-alert ng-repeat="alert in alerts" dismiss-on-timeout="2000" type="{{alert.type}}" close="closeAlert()">{{alert.msg}}</uib-alert>
 
-<div id="page-wrapper">
+<div id="page-wrapper" ng-style="{'pointer-events' : chargeString}">
     <div data-toggle="collapse" data-target="#arbol" class="ui-content subheaders">2. Seleccionar TRD / Serie / Subserie</div>
     <div id="arbol" class="collapse">
         <div class="row">

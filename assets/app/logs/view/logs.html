@@ -24,6 +24,7 @@
         <thead>
         <tr>
             <th> Fecha </th>
+            <th> Nombre del archivo </th>
             <th> Evento</th>
             <th> Log</th>
         </tr>
@@ -34,6 +35,7 @@
 
      <script type="text/ng-template" id="display">
              <td>{{c.dateLog}}</td>
+             <td>{{c.fileName}}</td>
              <td >{{c.eventLog}}</td>
              <td >{{c}}</td>
         </th>
@@ -41,6 +43,7 @@
     </script>
     <script type="text/ng-template" id="edit">
         <td>{{c.dateLog}}</td>
+        <td>{{c.fileName}}</td>
         <td >{{c.eventLog}}</td>
         <td >{{c.toString()}}</td>
     </script>
