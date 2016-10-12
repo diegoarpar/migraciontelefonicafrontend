@@ -85,6 +85,22 @@
                     b.EEauthorizationImage = a;
                 }
                 ,
+                b.setUser = function(b) {
+                    return $cookies.put("User",b) ;
+                }
+                ,
+                b.getUser = function() {
+                    return $cookies.get("User") ;
+                }
+                ,
+                b.setPassword = function(b) {
+                    return $cookies.put("Password",b) ;
+                }
+                ,
+                b.getPassword = function() {
+                    return $cookies.get("Password") ;
+                }
+                ,
                 b
         }
 

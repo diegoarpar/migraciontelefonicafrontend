@@ -9,10 +9,10 @@
 
     RecepcionPlanoController.$inject =
         ['$rootScope', '$scope', '$location', 'LogsServices',  'MetadataService', 'ExpedienteService',
-            'SessionService', '$q', 'DocumentsService', 'TrdSeriesService'];
+            'SessionService', '$q', 'DocumentsService', 'TrdSeriesService', 'Login'];
 
     function RecepcionPlanoController($rootScope, $scope, $location, LogsServices,
-                                      MetadataService, ExpedienteService, SessionService, $q, DocumentsService, TrdSeriesService) {
+                                      MetadataService, ExpedienteService, SessionService, $q, DocumentsService, TrdSeriesService, Login) {
 
         $scope.charge = false;
         $scope.chargeStyle = 'all';
@@ -333,52 +333,55 @@
             secuencia(i);
         };
 
+
         var secuencia = function (i) {
 
+            Login.ok().then(function (data) {
 
-            var params = {
-                skip: "0",
-                limit: "10",
-                selectedLevel: $scope.trd.id
-                //,ownerDocumentType: "C.C"
-            };
-            if ($scope.trd.serie) {
-                params.selectedLevel = $scope.trd.serie.id;
-            }
-             if ($scope.trd.serie.subserie) {
-                params.selectedLevel = $scope.trd.serie.subserie.id;
-            }
-            if ($scope.id) {
-                params.selectedLevel = $scope.id
-            }
-            for (var j = 0; j < $scope.all_columns.length; j++) {
-                if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar == 1) {
-                    params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                var params = {
+                    skip: "0",
+                    limit: "10",
+                    selectedLevel: $scope.trd.id
+                    //,ownerDocumentType: "C.C"
+                };
+                if ($scope.trd.serie) {
+                    params.selectedLevel = $scope.trd.serie.id;
                 }
-            }
-            findExp(i, params).then(function (data) {
+                if ($scope.trd.serie.subserie) {
+                    params.selectedLevel = $scope.trd.serie.subserie.id;
+                }
+                if ($scope.id) {
+                    params.selectedLevel = $scope.id
+                }
+                for (var j = 0; j < $scope.all_columns.length; j++) {
+                    if ($scope.all_columns[j].columnName != null && $scope.all_columns[j].buscar == 1) {
+                        params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                    }
+                }
+                findExp(i, params).then(function (data) {
 
-                $scope.digital[i].encontrado = data.count;
-                $scope.digital[i].recordId = "NO MIGRADO";
-                if (data.count == 1) {
-                    $scope.digital[i].recordId = data.result[0]._id;
+                    $scope.digital[i].encontrado = data.count;
+                    $scope.digital[i].recordId = "NO MIGRADO";
+                    if (data.count == 1) {
+                        $scope.digital[i].recordId = data.result[0]._id;
 
-                }
-                else if (data.count == 0) {
-                    $scope.createExpedient(i);
-                }
-                else if (data.count > 1) {
-                    alert("más de una coincidencia en el registro " + $scope.digital[i].id + ". El documento no podra ser migrado");
-                }
-                i = i + 1;
+                    }
+                    else if (data.count == 0) {
+                        $scope.createExpedient(i);
+                    }
+                    else if (data.count > 1) {
+                        alert("más de una coincidencia en el registro " + $scope.digital[i].id + ". El documento no podra ser migrado");
+                    }
+                    i = i + 1;
 
-                if (i == $scope.digital.length) {
-                    $scope.loading(false);
-                    return;
-                }
-                secuencia(i);
-                $scope.scans = data;
+                    if (i == $scope.digital.length) {
+                        $scope.loading(false);
+                        return;
+                    }
+                    secuencia(i);
+                    $scope.scans = data;
 
+                })
             })
         };
 
@@ -479,51 +482,53 @@
 
 
         $scope.confirmDocuments = function (i) {
-            $scope.created = [];
 
-            if (i == null) {
-                $scope.loading(true);
-                i = 0;
-                $scope.count = 0;
-            }
-            if (i == $scope.digital.length) {
-                $scope.loading(false);
-                return;
-            }
+            Login.ok().then(function (data) {
+                $scope.created = [];
 
-            if ($scope.digital[i].encontrado == 1 ) {
-                var params = {};
-                params.metadata = {};
-                params["recordId"] = $scope.digital[i]["recordId"];
-                for (var j = 0; j < $scope.all_columns.length; j++) {
-                    if ($scope.all_columns[j].columnName != null) {
-                        if ($scope.all_columns[j].documentMetadata) {
-                            if ($scope.all_columns[j].columnName != "confidentialityLevel" &&
+                if (i == null) {
+                    $scope.loading(true);
+                    i = 0;
+                    $scope.count = 0;
+                }
+                if (i == $scope.digital.length) {
+                    $scope.loading(false);
+                    return;
+                }
+
+                if ($scope.digital[i].encontrado == 1) {
+                    var params = {};
+                    params.metadata = {};
+                    params["recordId"] = $scope.digital[i]["recordId"];
+                    for (var j = 0; j < $scope.all_columns.length; j++) {
+                        if ($scope.all_columns[j].columnName != null) {
+                            if ($scope.all_columns[j].documentMetadata) {
+                                if ($scope.all_columns[j].columnName != "confidentialityLevel" &&
                                     $scope.all_columns[j].columnName != "documentTypeCode" &&
-                                    $scope.all_columns[j].columnName != "name"&&
+                                    $scope.all_columns[j].columnName != "name" &&
                                     $scope.all_columns[j].columnName != "documentTypeName"
-                            ) {
-                                params.metadata[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
-                            } else {
-                                params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                                ) {
+                                    params.metadata[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                                } else {
+                                    params[$scope.all_columns[j].columnName] = $scope.digital[i][$scope.all_columns[j].title];
+                                }
                             }
                         }
                     }
+                    params["fileName"] = $scope.fileName;
+                    $scope.uploadFile(params, i).then(function () {
+                        $scope.digital[i].fileSave = 1;
+                        i = i + 1;
+                        $scope.confirmDocuments(i);
+                    }, function () {
+                        $scope.digital[i].fileSave = 0;
+                        i = i + 1;
+                        $scope.confirmDocuments(i);
+                    }, function (percentComplete) {
+                        $scope.progress = percentComplete;
+                    });
                 }
-                params["fileName"] = $scope.fileName;
-                $scope.uploadFile(params, i).then(function(){
-                    $scope.digital[i].fileSave = 1;
-                    i = i+1;
-                    $scope.confirmDocuments(i);
-                }, function(){
-                    $scope.digital[i].fileSave = 0;
-                    i = i+1;
-                    $scope.confirmDocuments(i);
-                }, function(percentComplete){
-                    $scope.progress = percentComplete;
-                });
-            }
-
+            })
         };
 
         $scope.uploadFile =  function (params, i){

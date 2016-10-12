@@ -16,6 +16,9 @@
             if(SessionService.getAuthorizationToken())$scope.autenticado=true;
             $scope.ok = function (user, pass) {
                 $scope.username = user;
+                SessionService.setUser(user);
+                SessionService.setPassword(sha256(pass));
+
                 var rta = UsersService.authenticateFunctionary({
                     username: user
                 }, {
