@@ -496,7 +496,7 @@
                     return;
                 }
 
-                if ($scope.digital[i].encontrado == 1) {
+                if ($scope.digital[i].encontrado == 1 || ($scope.digital[i].encontrado == 0 && $scope.digital[i].recordId != null))  {
                     var params = {};
                     params.metadata = {};
                     params["recordId"] = $scope.digital[i]["recordId"];
