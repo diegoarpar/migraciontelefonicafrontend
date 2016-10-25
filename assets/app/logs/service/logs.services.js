@@ -21,7 +21,7 @@
                           headers:headers
                     },getLog: {
                        method: "GET",
-                       isArray: !1,
+                       isArray: true,
                        params : {},
                        url: url + "log",
                        headers:headers
