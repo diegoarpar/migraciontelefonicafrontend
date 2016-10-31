@@ -15,9 +15,9 @@
             $scope.endDate = new Date();
             $scope.digital=[];
             $scope.consultarLogs = function () {
-                LogsServices.getLog({"startDate": $scope.startDate,"endDate": $scope.endDate}).$promise.then(function(data){
-                    $scope.digital = data;
-                });
+                    LogsServices.getLog({"startDate": $scope.startDate,"endDate": $scope.endDate}).$promise.then(function(data){
+                        $scope.digital = data;
+                    });
             };
 
             $scope.getTemplate = function (c) {

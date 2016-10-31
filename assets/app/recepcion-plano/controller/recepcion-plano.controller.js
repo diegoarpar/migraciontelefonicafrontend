@@ -537,13 +537,8 @@
             var deferred = $q.defer();
             var percentComplete = 0;
 
-            var params2=params;
-            params2.dateLog= new Date();
-            params2.eventLog= "Request_Create_Expediente";
-            LogsServices.insertLog(params2);
-
-            var rta = DocumentsService.createDocument(params);
-            rta.$promise.then(function (data) {
+              var rta = DocumentsService.createDocument(params);
+              rta.$promise.then(function (data) {
                     $scope.addAlert2('success', 'Documento ' + i + ' creado correctamente');
                     deferred.resolve();
                 },
@@ -551,8 +546,8 @@
                     $scope.addAlert2('error', 'Documento ' + i + ' no ha podido ser creado correctamente');
                     deferred.reject()
                 }
-            );
-            return deferred.promise;
+              );
+              return deferred.promise;
         };
 
 
